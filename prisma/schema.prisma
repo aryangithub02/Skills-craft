@@ -1,0 +1,153 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String? // Hashed password for credentials login
+  accounts      Account[]
+  sessions      Session[]
+
+  bio        String?
+  experience Int?
+  skills     String[]
+  industry   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  resumes           Resume[]
+  coverLetters      CoverLetter[]
+  assessments       Assessment[]
+  industryInsight   IndustryInsight? @relation(fields: [industryInsightId], references: [id])
+  industryInsightId String?
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Resume {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  content    String
+  resumeData Json? // Structured data for the form builder
+  atsScore   Float?
+  feedback   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CoverLetter {
+  id             String   @id @default(cuid())
+  userId         String
+  content        String
+  jobDescription String?
+  companyName    String?
+  jobTitle       String?
+  status         String   @default("draft")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model IndustryInsight {
+  id                String         @id @default(cuid())
+  industry          String         @unique
+  salaryRanges      Json[]
+  growthRate        Float?
+  demandLevel       demandLevel?
+  topSkills         String[]
+  marketOutlook     marketOutlook?
+  keyTrends         String[]
+  recommendedSkills String[]
+  lastUpdated       DateTime       @default(now())
+  nextUpdate        DateTime?
+
+  // Relations
+  users User[]
+}
+
+enum demandLevel {
+  High
+  Medium
+  Low
+}
+
+enum marketOutlook {
+  High
+  Medium
+  Low
+}
+
+model Assessment {
+  id             String   @id @default(cuid())
+  userId         String
+  quizScore      Float?
+  questions      Json[]
+  category       String?
+  improvementTip String?
+  interviewType  String? // "technical", "non-technical", or "mixed"
+  timeSpent      Int? // Duration in seconds
+  difficulty     String? // Overall difficulty level
+  topicsTested   String[] // Categories of questions tested
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
