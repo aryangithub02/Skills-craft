@@ -1,0 +1,242 @@
+[
+  {
+    "industry": "Technology",
+    "salaryRanges": [
+      { "role": "Software Engineer", "min": 300000, "max": 1200000, "median": 550000, "location": "Bangalore, Pune, Hyderabad" },
+      { "role": "Frontend Developer", "min": 280000, "max": 1000000, "median": 500000, "location": "Metro Cities" },
+      { "role": "Backend Developer", "min": 350000, "max": 1300000, "median": 650000, "location": "Bangalore, Remote" },
+      { "role": "DevOps Engineer", "min": 450000, "max": 1800000, "median": 900000, "location": "Hybrid/Remote" },
+      { "role": "Data Analyst", "min": 350000, "max": 1100000, "median": 600000, "location": "Bangalore, Gurgaon" }
+    ],
+    "growthRate": 9.5,
+    "demandLevel": "High",
+    "topSkills": ["JavaScript", "Python", "Data Structures"],
+    "marketOutlook": "High",
+    "keyTrends": ["AI Adoption", "Cloud Migration", "Remote Teams"],
+    "recommendedSkills": ["React", "SQL", "Git"]
+  },
+  {
+    "industry": "Healthcare",
+    "salaryRanges": [
+      { "role": "Staff Nurse", "min": 200000, "max": 450000, "median": 300000, "location": "Hospitals (Pan India)" },
+      { "role": "General Physician", "min": 600000, "max": 1500000, "median": 900000, "location": "Tier 1 & 2 Cities" },
+      { "role": "Medical Lab Technician", "min": 180000, "max": 400000, "median": 260000, "location": "Hospitals, Labs" },
+      { "role": "Hospital Administrator", "min": 400000, "max": 1200000, "median": 700000, "location": "Metro Cities" },
+      { "role": "Pharmacist", "min": 200000, "max": 500000, "median": 320000, "location": "Retail & Hospitals" }
+    ],
+    "growthRate": 12.0,
+    "demandLevel": "High",
+    "topSkills": ["Patient Care", "Clinical Procedures", "Medical Records"],
+    "marketOutlook": "High",
+    "keyTrends": ["Telemedicine", "Digital Health", "Preventive Care"],
+    "recommendedSkills": ["Digital Tools", "Communication", "Empathy"]
+  },
+  {
+    "industry": "Finance",
+    "salaryRanges": [
+      { "role": "Accountant", "min": 250000, "max": 600000, "median": 400000, "location": "Pan India" },
+      { "role": "Financial Analyst", "min": 350000, "max": 900000, "median": 550000, "location": "Mumbai, Bangalore" },
+      { "role": "Banking Officer", "min": 300000, "max": 700000, "median": 450000, "location": "Banks" },
+      { "role": "Risk Analyst", "min": 500000, "max": 1300000, "median": 800000, "location": "Mumbai" },
+      { "role": "Wealth Advisor", "min": 400000, "max": 1200000, "median": 650000, "location": "Metro Cities" }
+    ],
+    "growthRate": 6.8,
+    "demandLevel": "Medium",
+    "topSkills": ["Excel", "Financial Reporting", "Compliance"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["FinTech", "Digital Banking", "Regulations"],
+    "recommendedSkills": ["SQL", "Power BI", "Communication"]
+  },
+  {
+    "industry": "Education",
+    "salaryRanges": [
+      { "role": "School Teacher", "min": 180000, "max": 450000, "median": 300000, "location": "Private Schools" },
+      { "role": "College Lecturer", "min": 350000, "max": 900000, "median": 550000, "location": "Colleges" },
+      { "role": "Online Tutor", "min": 250000, "max": 700000, "median": 400000, "location": "Remote" },
+      { "role": "Academic Coordinator", "min": 300000, "max": 800000, "median": 500000, "location": "Institutions" },
+      { "role": "Education Counsellor", "min": 250000, "max": 600000, "median": 400000, "location": "Metro Cities" }
+    ],
+    "growthRate": 5.5,
+    "demandLevel": "Medium",
+    "topSkills": ["Teaching", "Assessment", "Student Engagement"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["Online Learning", "Skill-Based Education"],
+    "recommendedSkills": ["Content Creation", "Communication", "Psychology"]
+  },
+  {
+    "industry": "Manufacturing",
+    "salaryRanges": [
+      { "role": "Production Engineer", "min": 300000, "max": 800000, "median": 500000, "location": "Industrial Cities" },
+      { "role": "Quality Engineer", "min": 350000, "max": 900000, "median": 550000, "location": "Factories" },
+      { "role": "Maintenance Engineer", "min": 300000, "max": 850000, "median": 520000, "location": "Plants" },
+      { "role": "Supply Chain Executive", "min": 400000, "max": 1200000, "median": 700000, "location": "Metro Cities" },
+      { "role": "Plant Supervisor", "min": 500000, "max": 1500000, "median": 900000, "location": "Industrial Zones" }
+    ],
+    "growthRate": 6.5,
+    "demandLevel": "Medium",
+    "topSkills": ["Lean Manufacturing", "Quality Control", "Operations"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["Automation", "Industry 4.0"],
+    "recommendedSkills": ["CAD", "Data Analysis", "Safety Compliance"]
+  },
+  {
+    "industry": "Retail",
+    "salaryRanges": [
+      { "role": "Sales Executive", "min": 200000, "max": 450000, "median": 300000, "location": "Stores" },
+      { "role": "Store Manager", "min": 350000, "max": 900000, "median": 550000, "location": "Retail Chains" },
+      { "role": "Inventory Executive", "min": 250000, "max": 600000, "median": 400000, "location": "Warehouses" },
+      { "role": "E-commerce Executive", "min": 350000, "max": 1000000, "median": 600000, "location": "Online Retail" },
+      { "role": "Retail Analyst", "min": 400000, "max": 1100000, "median": 700000, "location": "Corporate" }
+    ],
+    "growthRate": 8.2,
+    "demandLevel": "High",
+    "topSkills": ["Customer Service", "Sales", "Inventory Management"],
+    "marketOutlook": "High",
+    "keyTrends": ["E-commerce Growth", "Omnichannel Retail"],
+    "recommendedSkills": ["CRM Tools", "Digital Marketing", "Negotiation"]
+  },
+  {
+    "industry": "Marketing",
+    "salaryRanges": [
+      { "role": "Marketing Executive", "min": 250000, "max": 600000, "median": 400000, "location": "Agencies" },
+      { "role": "Digital Marketing Executive", "min": 300000, "max": 700000, "median": 450000, "location": "Startups" },
+      { "role": "SEO Executive", "min": 250000, "max": 600000, "median": 380000, "location": "Agencies" },
+      { "role": "Content Writer", "min": 220000, "max": 550000, "median": 350000, "location": "Remote" },
+      { "role": "Brand Executive", "min": 400000, "max": 1000000, "median": 650000, "location": "Metro Cities" }
+    ],
+    "growthRate": 8.5,
+    "demandLevel": "High",
+    "topSkills": ["SEO", "Content", "Analytics"],
+    "marketOutlook": "High",
+    "keyTrends": ["Video Marketing", "Influencers", "AI Tools"],
+    "recommendedSkills": ["Google Analytics", "Copywriting", "Video Editing"]
+  },
+  {
+    "industry": "Consulting",
+    "salaryRanges": [
+      { "role": "Business Analyst", "min": 400000, "max": 1200000, "median": 650000, "location": "Metro Cities" },
+      { "role": "Management Consultant", "min": 600000, "max": 2000000, "median": 1000000, "location": "Top Firms" },
+      { "role": "Process Consultant", "min": 450000, "max": 1300000, "median": 750000, "location": "Corporate" },
+      { "role": "HR Consultant", "min": 350000, "max": 900000, "median": 550000, "location": "Firms" },
+      { "role": "IT Consultant", "min": 500000, "max": 1600000, "median": 850000, "location": "Tech Consulting" }
+    ],
+    "growthRate": 7.2,
+    "demandLevel": "Medium",
+    "topSkills": ["Problem Solving", "Communication", "Analysis"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["Digital Consulting", "Remote Projects"],
+    "recommendedSkills": ["Excel", "PowerPoint", "Stakeholder Management"]
+  },
+  {
+    "industry": "Real Estate",
+    "salaryRanges": [
+      { "role": "Site Supervisor", "min": 250000, "max": 700000, "median": 450000, "location": "Construction Sites" },
+      { "role": "Property Manager", "min": 350000, "max": 900000, "median": 600000, "location": "Metro Cities" },
+      { "role": "Real Estate Sales Executive", "min": 250000, "max": 800000, "median": 400000, "location": "Developers" },
+      { "role": "Civil Engineer", "min": 300000, "max": 900000, "median": 550000, "location": "Projects" },
+      { "role": "Project Coordinator", "min": 400000, "max": 1200000, "median": 750000, "location": "Real Estate Firms" }
+    ],
+    "growthRate": 6.0,
+    "demandLevel": "Medium",
+    "topSkills": ["Project Management", "Sales", "Site Coordination"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["Affordable Housing", "PropTech"],
+    "recommendedSkills": ["AutoCAD", "Negotiation", "Legal Basics"]
+  },
+  {
+    "industry": "Hospitality",
+    "salaryRanges": [
+      { "role": "Hotel Front Office Executive", "min": 200000, "max": 450000, "median": 300000, "location": "Hotels" },
+      { "role": "Hotel Manager", "min": 500000, "max": 1500000, "median": 800000, "location": "Tourist Cities" },
+      { "role": "Chef", "min": 300000, "max": 900000, "median": 550000, "location": "Hotels" },
+      { "role": "Event Coordinator", "min": 300000, "max": 800000, "median": 500000, "location": "Event Firms" },
+      { "role": "Travel Consultant", "min": 250000, "max": 600000, "median": 400000, "location": "Agencies" }
+    ],
+    "growthRate": 7.5,
+    "demandLevel": "High",
+    "topSkills": ["Customer Service", "Operations", "Communication"],
+    "marketOutlook": "High",
+    "keyTrends": ["Domestic Tourism", "Experience Travel"],
+    "recommendedSkills": ["CRM Tools", "Leadership", "Multilingualism"]
+  },
+  {
+    "industry": "Transportation",
+    "salaryRanges": [
+      { "role": "Logistics Executive", "min": 300000, "max": 700000, "median": 450000, "location": "Logistics Firms" },
+      { "role": "Supply Chain Analyst", "min": 400000, "max": 1000000, "median": 650000, "location": "Corporate" },
+      { "role": "Fleet Manager", "min": 350000, "max": 900000, "median": 600000, "location": "Transport Companies" },
+      { "role": "Operations Executive", "min": 280000, "max": 650000, "median": 420000, "location": "Pan India" },
+      { "role": "Transport Planner", "min": 500000, "max": 1400000, "median": 850000, "location": "Metro Cities" }
+    ],
+    "growthRate": 6.8,
+    "demandLevel": "Medium",
+    "topSkills": ["Logistics Planning", "Operations", "Compliance"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["EV Logistics", "Last-Mile Delivery"],
+    "recommendedSkills": ["Data Analysis", "Project Management", "Safety"]
+  },
+  {
+    "industry": "Energy",
+    "salaryRanges": [
+      { "role": "Electrical Engineer", "min": 300000, "max": 900000, "median": 550000, "location": "Power Plants" },
+      { "role": "Renewable Energy Technician", "min": 250000, "max": 700000, "median": 450000, "location": "Solar/Wind Sites" },
+      { "role": "Energy Analyst", "min": 400000, "max": 1200000, "median": 700000, "location": "Corporate" },
+      { "role": "Project Engineer", "min": 500000, "max": 1500000, "median": 900000, "location": "Infrastructure" },
+      { "role": "Safety Officer", "min": 300000, "max": 800000, "median": 500000, "location": "Sites" }
+    ],
+    "growthRate": 6.3,
+    "demandLevel": "Medium",
+    "topSkills": ["Electrical Systems", "Safety", "Project Execution"],
+    "marketOutlook": "High",
+    "keyTrends": ["Renewable Energy", "Grid Modernization"],
+    "recommendedSkills": ["Regulations", "Technical Documentation", "Analytics"]
+  },
+  {
+    "industry": "Agriculture",
+    "salaryRanges": [
+      { "role": "Agriculture Officer", "min": 250000, "max": 600000, "median": 400000, "location": "Govt/NGOs" },
+      { "role": "Farm Manager", "min": 200000, "max": 500000, "median": 350000, "location": "Farms" },
+      { "role": "Agri Sales Executive", "min": 250000, "max": 700000, "median": 450000, "location": "Agri Companies" },
+      { "role": "Soil Analyst", "min": 300000, "max": 800000, "median": 500000, "location": "Labs" },
+      { "role": "Supply Chain Coordinator", "min": 300000, "max": 900000, "median": 550000, "location": "Agri Logistics" }
+    ],
+    "growthRate": 4.5,
+    "demandLevel": "Medium",
+    "topSkills": ["Crop Management", "Soil Science", "Operations"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["AgriTech", "Organic Farming"],
+    "recommendedSkills": ["Data Tools", "Sustainability", "Business Basics"]
+  },
+  {
+    "industry": "Media & Entertainment",
+    "salaryRanges": [
+      { "role": "Video Editor", "min": 250000, "max": 700000, "median": 450000, "location": "Studios/Remote" },
+      { "role": "Graphic Designer", "min": 220000, "max": 600000, "median": 380000, "location": "Agencies" },
+      { "role": "Journalist", "min": 250000, "max": 800000, "median": 450000, "location": "Media Houses" },
+      { "role": "Content Producer", "min": 400000, "max": 1200000, "median": 700000, "location": "OTT Platforms" },
+      { "role": "Creative Director", "min": 700000, "max": 2500000, "median": 1200000, "location": "Studios" }
+    ],
+    "growthRate": 8.8,
+    "demandLevel": "High",
+    "topSkills": ["Creativity", "Editing Tools", "Storytelling"],
+    "marketOutlook": "High",
+    "keyTrends": ["OTT Growth", "Short-form Content"],
+    "recommendedSkills": ["Adobe Suite", "Animation", "Social Media"]
+  },
+  {
+    "industry": "Legal",
+    "salaryRanges": [
+      { "role": "Junior Advocate", "min": 200000, "max": 600000, "median": 350000, "location": "Courts" },
+      { "role": "Corporate Legal Executive", "min": 400000, "max": 1200000, "median": 700000, "location": "Corporate Offices" },
+      { "role": "Paralegal", "min": 250000, "max": 500000, "median": 350000, "location": "Law Firms" },
+      { "role": "Compliance Officer", "min": 500000, "max": 1500000, "median": 900000, "location": "Companies" },
+      { "role": "Legal Consultant", "min": 600000, "max": 2000000, "median": 1100000, "location": "Firms/Freelance" }
+    ],
+    "growthRate": 5.2,
+    "demandLevel": "Medium",
+    "topSkills": ["Legal Research", "Drafting", "Compliance"],
+    "marketOutlook": "Medium",
+    "keyTrends": ["LegalTech", "Cyber Law"],
+    "recommendedSkills": ["Communication", "Analytical Thinking", "Ethics"]
+  }
+]

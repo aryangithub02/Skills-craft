@@ -1,6 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SkillsCraft 🚀
 
-## Getting Started
+![SkillsCraft Logo](/skillscraft_logo_1768835132077.png)
+
+**SkillsCraft** is an AI-powered career coaching platform designed to guide students and professionals toward career success. By leveraging the Gemini API and advanced automation, SkillsCraft offers a suite of tools to build, refine, and simulate the career journey.
+
+## 🌟 Core Features
+
+### 1. 🔐 Authentication & Onboarding
+- **Secure Access**: Google and Email authentication options.
+- **Smart Onboarding**: A guided flow capturing industry preferences, skills, and professional bio.
+- **Data Integrity**: All forms are rigorously validated using **Zod**.
+
+### 2. 📊 Industry Insights Dashboard
+- **Live Market Data**: Displays weekly updated industry trends and market insights.
+- **Background Automation**: Powered by **Inngest** cron jobs to fetch and process data in the background without affecting UI performance.
+
+### 3. 📝 AI Resume Builder ("Improve with AI")
+- **Gemini Powered**: Sends raw user bullet points to **Gemini 1.5 Flash**.
+- **ATS Optimization**: Returns ATS-optimized content in Markdown format, tailored for maximum impact.
+
+### 4. 📄 PDF Export System
+- **Real-time Conversion**: Uses `html2pdf` to convert live Markdown previews into professional, downloadable PDF documents.
+
+### 5. 🎤 Mock Interview System
+- **AI Simulation**: Interactive technical interview sessions with AI-generated questions.
+- **Performance Tracking**: Quiz results and feedback are stored in **PostgreSQL**.
+- **Visual Analytics**: Interactive charts powered by **Recharts** to visualize improvement over time.
+
+### 6. ✉️ AI Cover Letter Generator
+- **Dynamic Creation**: Generates tailored cover letters based on specific job descriptions, company names, and your stored profile data.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Language**: React 19 / JavaScript
+- **Styling**: Tailwind CSS, Shadcn UI
+- **AI Model**: [Google Gemini 1.5 Flash](https://deepmind.google/technologies/gemini/)
+- **Background Jobs**: [Inngest](https://www.inngest.com/)
+- **Database**: PostgreSQL (Prisma/Drizzle)
+- **Validation**: Zod
+- **Visualization**: Recharts
+
+## 🚀 Getting Started
 
 First, run the development server:
 
@@ -16,21 +59,7 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🤝 Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project is currently under active development.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
