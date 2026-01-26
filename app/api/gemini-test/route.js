@@ -1,24 +1,31 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-        return NextResponse.json({ error: "GEMINI_API_KEY is not defined" }, { status: 500 });
+        return NextResponse.json({ error: "API Key is not defined" }, { status: 500 });
     }
 
     try {
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+        const openai = new OpenAI({
+            baseURL: "https://openrouter.ai/api/v1",
+            apiKey: apiKey,
+        });
 
-        const result = await model.generateContent("Hello! Are you working correctly? Reply with 'Yes, connected!'.");
-        const response = await result.response;
-        const text = response.text();
+        const response = await openai.chat.completions.create({
+            model: "google/gemini-2.0-flash-001",
+            messages: [
+                { role: "user", content: "Hello! Are you working correctly? Reply with 'Yes, connected!'." }
+            ],
+        });
+
+        const text = response.choices[0].message.content;
 
         return NextResponse.json({
             success: true,
-            model: "gemini-2.0-flash-exp",
+            model: "google/gemini-2.0-flash-001",
             message: text
         });
     } catch (error) {
