@@ -4,10 +4,7 @@ import { OpenAI } from "openai";
 import pLimit from "p-limit";
 import { getAllInsightCategories } from "@/lib/industry-mapper";
 
-const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY,
-});
+// OpenAI initialized lazily
 
 export const generateIndustryInsights = inngest.createFunction(
   { name: "Generate Industry Insights" },
@@ -60,6 +57,11 @@ export const generateIndustryInsights = inngest.createFunction(
       const timeoutId = setTimeout(() => controller.abort(), 20_000);
 
       try {
+        const openai = new OpenAI({
+          baseURL: "https://openrouter.ai/api/v1",
+          apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY,
+        });
+
         const response = await openai.chat.completions.create({
           model: "google/gemini-2.0-flash-001",
           messages: [
@@ -152,6 +154,11 @@ Ensure all enums match exactly: High, Medium, Low.
             const timeoutId = setTimeout(() => controller.abort(), 20_000);
 
             try {
+              const openai = new OpenAI({
+                baseURL: "https://openrouter.ai/api/v1",
+                apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY,
+              });
+
               const response = await openai.chat.completions.create({
                 model: "google/gemini-2.0-flash-001",
                 messages: [

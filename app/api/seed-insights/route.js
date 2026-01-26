@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import pLimit from "p-limit";
 import { getAllInsightCategories } from "@/lib/industry-mapper";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Get all insight categories from the industries definition
 const allIndustries = getAllInsightCategories();
 
