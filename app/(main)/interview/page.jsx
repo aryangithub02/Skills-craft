@@ -9,6 +9,15 @@ import { getUserAssessments, getUserAssessmentStats } from "@/actions/assessment
 import { useSession } from "next-auth/react";
 import { Loader2, FileText, TrendingUp, Target, RotateCcw, Play } from "lucide-react";
 
+/**
+ * Render the mock interview dashboard for an authenticated user.
+ *
+ * Displays user interview statistics, recent interview sessions, and controls to
+ * start a new interview or refresh data. Handles session-driven data loading and
+ * navigation to setup and individual session pages.
+ *
+ * @returns {JSX.Element} The interview dashboard page UI.
+ */
 export default function InterviewPage() {
   const router = useRouter();
   const { data: session, status } = useSession();

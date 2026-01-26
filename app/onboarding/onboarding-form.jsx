@@ -28,6 +28,12 @@ const onboardingSchema = z.object({
   skills: z.array(z.string()).min(1, "Please add at least one skill"),
 });
 
+/**
+ * Multi-step onboarding form that collects industry, specialization, experience, skills, and a professional bio, then submits the formatted profile to update the user and navigate to the dashboard on success.
+ *
+ * @param {Array<Object>} industries - Array of industry objects used to populate selects. Each object should include `id` (string), `name` (string), and `subIndustries` (Array<Object>) where each sub-industry has `slug` (string) and `name` (string).
+ * @returns {JSX.Element} The onboarding form UI.
+ */
 export default function OnboardingForm({ industries }) {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);

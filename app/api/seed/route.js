@@ -1,6 +1,15 @@
 import { db } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+/**
+ * Seed the database with example IndustryInsight and User records for development or testing.
+ *
+ * Performs upsert operations to ensure an IndustryInsight for "Tech" and a user with
+ * email "web-test@example.com" exist, creating them with predefined fields if absent.
+ *
+ * @returns {NextResponse} JSON response: on success `{ success: true, message: string, userId: string }`;
+ * on error `{ success: false, error: string }` and an HTTP status of 500.
+ */
 export async function GET() {
     try {
         // 1. Create an Industry Insight (related data)

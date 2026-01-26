@@ -2,6 +2,11 @@ import { getLandingPageStats } from "@/actions/public";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Users, LineChart, Brain } from "lucide-react";
 
+/**
+ * Renders a responsive stats section displaying four landing-page metrics.
+ *
+ * @returns {JSX.Element} A section element containing four metric cards (Industries Tracked, Avg. Growth Rate, Market Demand, Top In-Demand Skill) populated with current landing-page statistics.
+ */
 export default async function StatsSection() {
   const stats = await getLandingPageStats();
 

@@ -6,24 +6,49 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Render the Select root element that forwards all props to the underlying Radix Select primitive and marks it with a data-slot.
+ *
+ * @param {object} props - Props forwarded to the underlying Select primitive.
+ * @returns {React.ReactElement} The Select root React element.
+ */
 function Select({
   ...props
 }) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
 }
 
+/**
+ * Render a select grouping container that forwards all received props and sets data-slot="select-group".
+ * @param {object} props - Props forwarded to the rendered element.
+ * @returns {JSX.Element} The select group element.
+ */
 function SelectGroup({
   ...props
 }) {
   return <SelectPrimitive.Group data-slot="select-group" {...props} />;
 }
 
+/**
+ * Renders a Radix Select Value element that forwards all received props and marks it with data-slot "select-value".
+ * @param {object} props - Props forwarded to the underlying SelectPrimitive.Value component.
+ * @returns {JSX.Element} The SelectPrimitive.Value element with data-slot "select-value".
+ */
 function SelectValue({
   ...props
 }) {
   return <SelectPrimitive.Value data-slot="select-value" {...props} />;
 }
 
+/**
+ * Render a styled select trigger with a dropdown icon and size variant.
+ *
+ * @param {string} [className] - Additional CSS classes to merge with the default styles.
+ * @param {"default"|"sm"} [size="default"] - Size variant that controls the trigger's height.
+ * @param {import('react').ReactNode} [children] - Content rendered inside the trigger.
+ * @param {object} [props] - Additional props forwarded to the trigger element.
+ * @returns {import('react').JSX.Element} The rendered select trigger element.
+ */
 function SelectTrigger({
   className,
   size = "default",
@@ -47,6 +72,15 @@ function SelectTrigger({
   );
 }
 
+/**
+ * Render the Select dropdown content inside a Portal with scroll controls and configurable positioning and alignment.
+ *
+ * @param {string} [className] - Additional CSS class names to apply to the content container.
+ * @param {React.ReactNode} children - Elements to render inside the Select viewport.
+ * @param {'item-aligned'|'popper'} [position="item-aligned"] - Layout positioning mode for the content.
+ * @param {'start'|'center'|'end'} [align="center"] - Alignment of the content relative to the trigger.
+ * @returns {JSX.Element} The Select content element rendered within a Portal.
+ */
 function SelectContent({
   className,
   children,
@@ -79,6 +113,14 @@ function SelectContent({
   );
 }
 
+/**
+ * Render a Select label element with default text styling and a data-slot.
+ *
+ * Merges provided `className` with the component's base text styles and forwards remaining props to the underlying element.
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional CSS classes to append to the base styles.
+ * @returns {JSX.Element} The rendered Select label element.
+ */
 function SelectLabel({
   className,
   ...props
@@ -91,6 +133,14 @@ function SelectLabel({
   );
 }
 
+/**
+ * Render a styled selectable item containing a left-aligned label and a right-aligned selection indicator.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional CSS classes to merge with the component's base styles.
+ * @param {import('react').ReactNode} [props.children] - Content used as the item's visible label.
+ * @returns {import('react').ReactElement} A Select item element with an item indicator and text slot.
+ */
 function SelectItem({
   className,
   children,
@@ -116,6 +166,11 @@ function SelectItem({
   );
 }
 
+/**
+ * Render a styled separator for the Select component.
+ * @param {string} [className] - Additional CSS classes to merge with the separator's base styles.
+ * @returns {JSX.Element} A Select separator element with base border styling, pointer-events disabled, and any provided classes applied. 
+ */
 function SelectSeparator({
   className,
   ...props
@@ -128,6 +183,12 @@ function SelectSeparator({
   );
 }
 
+/**
+ * Render a select scroll-up button with default styling and an embedded ChevronUpIcon.
+ * @param {string} [className] - Additional CSS classes to merge with the component's default styles.
+ * @param {object} [props] - Additional props forwarded to the underlying Radix Select ScrollUpButton.
+ * @returns {JSX.Element} The Select ScrollUpButton element containing a ChevronUpIcon.
+ */
 function SelectScrollUpButton({
   className,
   ...props
@@ -142,6 +203,15 @@ function SelectScrollUpButton({
   );
 }
 
+/**
+ * Renders a styled Select scroll-down button with a downward chevron icon and a data-slot for integration.
+ *
+ * Forwards remaining props to the underlying Radix ScrollDownButton.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional CSS classes applied to the button.
+ * @returns {JSX.Element} The rendered scroll-down button element.
+ */
 function SelectScrollDownButton({
   className,
   ...props

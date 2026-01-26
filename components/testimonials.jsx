@@ -29,6 +29,13 @@ const testimonials = [
   },
 ];
 
+/**
+ * Render a responsive testimonials section displaying user feedback as cards.
+ *
+ * Each card shows a quote, an avatar (image with first-letter fallback), the author name,
+ * and the author's role, arranged in a responsive 1–3 column grid.
+ * @returns {JSX.Element} A JSX element representing the testimonials section.
+ */
 export default function TestimonialsSection() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
@@ -64,4 +71,3 @@ export default function TestimonialsSection() {
     </section>
   );
 };
-

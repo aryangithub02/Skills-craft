@@ -5,6 +5,11 @@ import SalaryChart from "@/components/industry/SalaryChart";
 import SkillsSection from "@/components/industry/SkillsSection";
 import SubIndustryGrid from "@/components/industry/SubIndustryGrid";
 
+/**
+ * Builds page metadata (title and description) for an industry overview page using the route params.
+ * @param {{ params: { industry: string } }} args - Route arguments containing `params.industry`, the industry slug.
+ * @returns {{ title: string, description?: string }} The metadata object; if the industry cannot be resolved the title is `"Industry Not Found"`, otherwise contains a title and description for the specified industry.
+ */
 export async function generateMetadata({ params }) {
     const { industry: industrySlug } = await params;
     const industry = await getIndustryOverview(industrySlug);
@@ -21,6 +26,15 @@ export async function generateMetadata({ params }) {
     };
 }
 
+/**
+ * Render the Industry Overview page for the specified industry slug.
+ *
+ * Fetches industry overview and sub-industry data, and renders the composed page
+ * including hero, salary chart, skills & trends, sub-industry explorer, and a CTA.
+ *
+ * @param {{ industry: string }} params - Route parameters containing the industry slug as `industry`.
+ * @returns {JSX.Element} The rendered Industry Overview page. If no industry is found, a 404 response is triggered.
+ */
 export default async function IndustryOverviewPage({ params }) {
     const { industry: industrySlug } = await params;
     const industryData = await getIndustryOverview(industrySlug);

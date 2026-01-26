@@ -1,6 +1,13 @@
 import { generateIndustryInsights } from "@/actions/industry";
 import { NextResponse } from "next/server";
 
+/**
+ * Trigger a real-time industry insights fetch for a test industry and return the result as JSON.
+ *
+ * @returns {NextResponse} JSON response with:
+ * - On success: `{ success: true, message: string, data: any }`.
+ * - On error: `{ success: false, error: string }` and HTTP status 500.
+ */
 export async function GET() {
     try {
         const testIndustry = "Technology";

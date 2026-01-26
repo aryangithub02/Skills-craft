@@ -1,5 +1,12 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Render skeleton placeholders for the sub-industry page layout while content is loading.
+ *
+ * Renders a hero section skeleton (title and tag pills) and a two-column chart area skeleton
+ * (large chart on the left and a circular graphic with legend lines on the right).
+ * @returns {JSX.Element} A JSX element containing skeleton placeholders for the hero and chart sections.
+ */
 export default function SubIndustryLoading() {
   return (
     <div className="container mx-auto p-6 space-y-8">

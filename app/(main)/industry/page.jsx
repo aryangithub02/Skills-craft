@@ -9,6 +9,10 @@ export const metadata = {
     description: "Explore comprehensive industry insights, salary trends, and skill requirements across 15+ industries.",
 };
 
+/**
+ * Render the Industry Insights landing page displaying a responsive grid of industry cards and a call-to-action to start a career assessment.
+ * @returns {JSX.Element} The React element for the Industry Insights landing page.
+ */
 export default async function IndustryLandingPage() {
     const industries = await getAllIndustries();
 

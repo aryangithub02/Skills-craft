@@ -2,6 +2,13 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Styled input component whose default UI classes can be extended via `className`.
+ * @param {string} [className] - Additional CSS classes to merge with the component's default styles.
+ * @param {string} [type] - Value for the input element's `type` attribute (e.g., "text", "email", "password").
+ * @param {object} [props] - Additional native input attributes and event handlers to spread onto the element.
+ * @returns {JSX.Element} The rendered input element.
+ */
 function Input({
   className,
   type,

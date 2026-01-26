@@ -23,6 +23,18 @@ const formSchema = z.object({
   jobDescription: z.string().min(1, "Job Description is required"),
 });
 
+/**
+ * UI for creating, generating, editing, previewing, and saving a cover letter.
+ *
+ * Renders a two-column layout with a job details form (job title, company name, job description) on the left
+ * and a Markdown editor plus live preview on the right. Provides actions to generate content via AI and to save
+ * the current cover letter content.
+ *
+ * @param {{ id: string, content?: string, jobTitle?: string, companyName?: string, jobDescription?: string }} coverLetter
+ *   Object providing initial values and identifier for the cover letter. `content` is used to initialize the editor;
+ *   `jobTitle`, `companyName`, and `jobDescription` populate the job details form; `id` is used when saving updates.
+ * @returns {JSX.Element} The CoverLetterGenerator component UI.
+ */
 export default function CoverLetterGenerator({ coverLetter }) {
   const [content, setContent] = useState(coverLetter.content || "");
   const [isGenerating, setIsGenerating] = useState(false);

@@ -7,6 +7,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
+/**
+ * Render the landing page hero section with animated badge, headline, subheadline, primary CTA, and a scroll-driven 3D dashboard preview.
+ *
+ * The component includes entrance animations for text and controls, a decorative glow backdrop, and a preview panel whose rotation, scale, and opacity respond to scroll progress.
+ * @returns {JSX.Element} The hero section element.
+ */
 export default function HeroSection() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({

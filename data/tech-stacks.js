@@ -689,9 +689,9 @@ export const subIndustryTechStacks = {
 };
 
 /**
- * Get tech stack for a formatted industry
- * @param {string} formattedIndustry - e.g., "tech-software-development"
- * @returns {object|null} Tech stack object or null
+ * Retrieve the tech stack object for a given formatted industry identifier.
+ * @param {string} formattedIndustry - Formatted industry key (e.g., "tech-software-development").
+ * @returns {object|null} The tech stack object for the given key, or `null` if the key is falsy or not found.
  */
 export function getTechStack(formattedIndustry) {
     if (!formattedIndustry) return null;
@@ -699,9 +699,9 @@ export function getTechStack(formattedIndustry) {
 }
 
 /**
- * Get primary skills for quick display
- * @param {string} formattedIndustry
- * @returns {string[]} Array of primary skills
+ * Retrieve the primary skills for a given formatted industry key.
+ * @param {string} formattedIndustry - The formatted industry identifier used as a key in subIndustryTechStacks.
+ * @returns {string[]} The primary skills for the specified industry, or an empty array if the industry is not found.
  */
 export function getPrimarySkills(formattedIndustry) {
     const stack = getTechStack(formattedIndustry);

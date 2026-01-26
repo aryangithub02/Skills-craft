@@ -9,6 +9,23 @@ import { Plus, X, Loader2, Sparkles, Trash2 } from "lucide-react";
 import { improveWithAI } from "@/lib/ai/improveResume";
 import { toast } from "sonner";
 
+/**
+ * Render a dynamic form for managing resume entries of a given type.
+ *
+ * Renders editable entries (Project, Experience, Education, or Certification), supports adding/removing entries,
+ * per-entry field updates, project bullet management (add/remove/edit), and AI-assisted improvements for descriptions
+ * and project bullets.
+ *
+ * @param {Object} props
+ * @param {"Project"|"Experience"|"Education"|"Certification"} props.type - Entry type to render and manage.
+ * @param {Array<Object>} [props.entries=[]] - Current list of entries. Shape varies by `type`:
+ *   - Project: { title, techStack, github, link, bullets: string[] }
+ *   - Experience: { title, organization, startDate, endDate, description, bullets: string[], current }
+ *   - Education: { title, organization, startDate, endDate, description, current }
+ *   - Certification: { name, issuer, date }
+ * @param {function(Array<Object>): void} props.onChange - Callback invoked with the updated entries array after any change.
+ * @returns {JSX.Element} The rendered entry management UI for the specified type.
+ */
 export default function EntryForm({ type, entries = [], onChange }) {
   const [isImproving, setIsImproving] = useState(false);
 

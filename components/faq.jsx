@@ -33,6 +33,11 @@ const faqs = [
   },
 ];
 
+/**
+ * Render a responsive FAQ section containing a collapsible accordion of predefined question-and-answer pairs.
+ *
+ * @returns {JSX.Element} The FAQ section element.
+ */
 export default function FAQSection() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">

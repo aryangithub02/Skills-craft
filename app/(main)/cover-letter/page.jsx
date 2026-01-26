@@ -4,6 +4,14 @@ import { Button } from "@/components/ui/button";
 import { getCoverLetters } from "@/actions/cover-letter";
 import CoverLetterList from "./_components/CoverLetterList";
 
+/**
+ * Render the Cover Letters page with fetched cover letters and a "Create New" action.
+ *
+ * The component fetches cover letter data and renders a page containing a header,
+ * a button linking to the creation page, and a list of cover letters.
+ *
+ * @returns {JSX.Element} The React element for the cover letters page.
+ */
 export default async function CoverLetterPage() {
   const coverLetters = await getCoverLetters();
 

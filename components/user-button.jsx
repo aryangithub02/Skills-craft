@@ -14,6 +14,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+/**
+ * Render a user avatar button that opens a dropdown showing the user's name, email, and a logout action.
+ *
+ * The component renders nothing when there is no authenticated session. When a session exists, it displays
+ * an avatar trigger that opens a menu containing the user's display name and email, and an item that signs
+ * the user out and redirects to the application root.
+ *
+ * @returns {JSX.Element|null} A React element with the avatar dropdown when a session exists, `null` otherwise.
+ */
 export default function UserButton() {
   const { data: session } = useSession();
 

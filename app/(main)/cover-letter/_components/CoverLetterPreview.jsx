@@ -4,6 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Download, FileDown } from "lucide-react";
 import MDEditor from "@uiw/react-md-editor";
 
+/**
+ * Render a preview of Markdown content with an option to download it as a PDF.
+ *
+ * Renders the provided Markdown inside a styled preview area and exposes a "Download PDF"
+ * action that generates a printable document from a hidden DOM node, opens the browser
+ * print dialog, and cleans up the temporary iframe used for printing.
+ *
+ * @param {Object} props
+ * @param {string} props.content - The Markdown source to render in the preview and the hidden PDF container.
+ * @param {string} [props.className] - Optional container CSS class names to apply to the root element.
+ * @returns {JSX.Element} The preview UI including the Markdown render and PDF download control.
+ */
 export default function CoverLetterPreview({ content, className }) {
     
     const downloadPDF = async () => {

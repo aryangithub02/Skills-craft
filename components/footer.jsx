@@ -1,5 +1,11 @@
 import Link from "next/link";
 
+/**
+ * Render the site footer containing the brand, primary navigation links, and external social links.
+ *
+ * The copyright year is populated dynamically from the current date.
+ * @returns {JSX.Element} The footer JSX element.
+ */
 export default function Footer() {
   return (
     <footer className="border-t bg-background">

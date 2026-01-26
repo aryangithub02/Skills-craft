@@ -5,6 +5,13 @@ require('dotenv').config({ path: '.env.local' });
 
 const prisma = new PrismaClient();
 
+/**
+ * Seed industry insights from data/insights.json into the database.
+ *
+ * Reads ../data/insights.json, upserts each insight into the Prisma `industryInsight`
+ * table keyed by `industry`, and sets `lastUpdated` to the current time and
+ * `nextUpdate` to 30 days from now for both create and update paths.
+ */
 async function main() {
     try {
         const filePath = path.join(__dirname, '../data/insights.json');

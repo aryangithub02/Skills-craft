@@ -7,6 +7,12 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '.env' });
 dotenv.config({ path: '.env.local', override: true });
 
+/**
+ * Tests the database connection using DATABASE_URL and a Prisma PostgreSQL adapter.
+ *
+ * Attempts to count user records to verify connectivity, logs the success or error outcome,
+ * and always disconnects the Prisma client and closes the PostgreSQL pool.
+ */
 async function main() {
     const url = process.env.DATABASE_URL;
     console.log('Testing DB connection with Adapter...');

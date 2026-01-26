@@ -7,6 +7,14 @@ import { Calendar, TrendingUp, Code, Wrench, Award, ArrowLeft } from "lucide-rea
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 
+/**
+ * Generate page metadata for a sub-industry route based on fetched sub-industry data.
+ *
+ * @param {{ params: { industry: string, subIndustry: string } }} options - Route parameters object containing `industry` and `subIndustry`.
+ * @returns {{ title: string, description?: string }} Metadata object with a `title` and, when data is available, a `description`.
+ * - If no data is found, returns `{ title: "Sub-Industry Not Found" }`.
+ * - If data is found, returns a descriptive `title` in the form "`<subIndustryName> in <industryName> | AI Career Coach`" and a `description` summarizing the sub-industry career insights.
+ */
 export async function generateMetadata({ params }) {
     const { industry, subIndustry } = await params;
     const data = await getSubIndustryData(industry, subIndustry);
@@ -23,6 +31,18 @@ export async function generateMetadata({ params }) {
     };
 }
 
+/**
+ * Render the sub-industry detail page with hero, metrics, skills, tech stack, trends, and CTAs.
+ *
+ * Fetches sub-industry data using the provided route params and renders a full detail view:
+ * breadcrumb and back link, demand/outlook/growth badges, last-updated time, essential skills,
+ * salary chart, technologies, tools, certifications, key trends, and a call-to-action section.
+ *
+ * @param {Object} params - Route parameters.
+ * @param {string} params.industry - Parent industry slug or identifier.
+ * @param {string} params.subIndustry - Sub-industry slug or identifier.
+ * @returns {JSX.Element} The page UI for the specified sub-industry. If no data is found, returns a debug information UI. 
+ */
 export default async function SubIndustryDetailPage({ params }) {
     const { industry, subIndustry } = await params;
     console.log(`DEBUG PAGE: industry=${industry}, subIndustry=${subIndustry}`);

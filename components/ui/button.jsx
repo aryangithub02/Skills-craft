@@ -36,6 +36,15 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Render a styled button element with selectable visual variant and size, optionally delegating rendering to a child element via Radix Slot.
+ * @param {string} [className] - Additional CSS classes to merge with computed button classes.
+ * @param {"default"|"destructive"|"outline"|"secondary"|"ghost"|"link"} [variant="default"] - Visual style variant to apply.
+ * @param {"default"|"sm"|"lg"|"icon"|"icon-sm"|"icon-lg"} [size="default"] - Size variant to apply.
+ * @param {boolean} [asChild=false] - When true, render a Radix Slot so the caller's child element becomes the actual DOM element.
+ * @param {object} [props] - Additional props forwarded to the rendered element (e.g., event handlers, ARIA attributes).
+ * @returns {JSX.Element} The composed button (or Slot-wrapped child) element with computed classes and data attributes.
+ */
 function Button({
   className,
   variant = "default",

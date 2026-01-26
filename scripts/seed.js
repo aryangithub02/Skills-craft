@@ -12,6 +12,11 @@ const prisma = new PrismaClient({
     adapter,
 });
 
+/**
+ * Seed the database with a predefined Industry Insight and User.
+ *
+ * Upserts an Industry Insight for the "Tech" industry and a test User, logs the created record IDs, handles unique-constraint (P2002) conflicts, and ensures the Prisma client is disconnected.
+ */
 async function main() {
     try {
         // 1. Create an Industry Insight (related data)

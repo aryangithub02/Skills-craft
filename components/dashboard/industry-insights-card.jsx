@@ -23,6 +23,23 @@ import {
   Rectangle,
 } from "recharts";
 
+/**
+ * Render an Industry Insights card displaying market metrics, a salary chart, and in-demand skills.
+ * 
+ * Renders a detailed card when `insights` is provided (title, market outlook, growth rate, demand level with progress, average salary bar chart, and skill badges). If `insights.routing` is present the card is wrapped in a Link to the industry route. When `insights` is falsy, renders a placeholder card indicating no insights are available.
+ * 
+ * @param {Object} insights - Data used to populate the card. If falsy, a placeholder is rendered.
+ * @param {string} insights.industry - Display name of the industry.
+ * @param {string} insights.marketOutlook - Short market outlook text shown in the description.
+ * @param {number|string} insights.growthRate - Growth rate value displayed as a percentage.
+ * @param {string} insights.demandLevel - Demand level one of "High", "Medium", or other (used to derive progress).
+ * @param {Array<Object>} insights.salaryRanges - Array of salary range objects for charting; each item should include `role`, `min`, `median`, and `max` (numeric values in the same units expected by the component).
+ * @param {Array<string>} insights.topSkills - List of top skills rendered as badges.
+ * @param {Object} [insights.routing] - Optional routing metadata; when present the card becomes a link.
+ * @param {string|number} insights.routing.industryId - Identifier used to build the industry URL.
+ * @param {string} insights.routing.subIndustrySlug - Slug used to build the industry URL.
+ * @returns {JSX.Element} A React element representing the Industry Insights card or a placeholder when `insights` is not provided.
+ */
 export default function IndustryInsightsCard({ insights }) {
   if (!insights) {
     return (

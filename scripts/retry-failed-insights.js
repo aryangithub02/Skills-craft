@@ -19,6 +19,12 @@ const failedIndustries = [
     'Legal'
 ];
 
+/**
+ * Generate structured industry insights and persist them to the database for the given industry.
+ *
+ * @param {string} industry - The industry name to generate insights for.
+ * @returns {Object} An object with the operation result: `industry` (the input name), `success` (`true` when the insight was upserted to the database, `false` otherwise), and `error` (a string message present only when `success` is `false`).
+ */
 async function generateInsight(industry) {
     const prompt = `
 Analyze the current state of the "${industry}" industry and provide insights in ONLY the following JSON format. DO NOT return markdown blocks or text, just the JSON object.
@@ -80,6 +86,11 @@ Ensure all enums match exactly: High, Medium, Low.
     }
 }
 
+/**
+ * Retry generation of insights for the predefined failed industries with up to three concurrent tasks and log progress and a summary.
+ *
+ * Runs generateInsight for each industry, logs per-industry start, success, or failure (with error messages), prints an aggregated summary of successes and failures, and disconnects the database client when finished.
+ */
 async function retryFailed() {
     console.log(`🚀 Retrying ${failedIndustries.length} failed industries with parallel processing...\n`);
 

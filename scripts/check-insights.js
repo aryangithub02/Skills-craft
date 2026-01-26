@@ -12,6 +12,11 @@ const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
+/**
+ * Checks the database for industry insights and logs either a guidance message when none exist or a summary for each found insight.
+ *
+ * The summary includes the total count and, for each insight, logs the industry, lastUpdated, a truncated JSON representation of salaryRanges, and topSkills.
+ */
 async function main() {
     console.log("🔍 Checking Industry Insights in Database...");
 

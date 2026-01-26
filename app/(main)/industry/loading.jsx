@@ -1,5 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Render skeleton placeholders for the Industry page loading state.
+ *
+ * Includes a hero section, a two-column chart area with a sidebar, and a responsive grid of card placeholders.
+ * @returns {JSX.Element} A React element containing the structured loading skeleton layout.
+ */
 export default function IndustryLoading() {
   return (
     <div className="container mx-auto p-6 space-y-8">

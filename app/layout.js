@@ -1,4 +1,3 @@
-
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -23,6 +22,13 @@ export const metadata = {
 
 import SessionProvider from "@/components/session-provider";
 
+/**
+ * Provides the root HTML layout for the application, applying fonts, theming, session context, and page chrome.
+ *
+ * @param {Object} props - Component props.
+ * @param {import('react').ReactNode} props.children - Page content to be rendered inside the main content area.
+ * @returns {JSX.Element} The top-level HTML structure containing theme and session providers, header, main content area, and footer.
+ */
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>

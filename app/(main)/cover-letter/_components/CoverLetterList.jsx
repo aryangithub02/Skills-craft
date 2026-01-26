@@ -9,6 +9,19 @@ import { deleteCoverLetter } from "@/actions/cover-letter";
 import { toast } from "sonner";
 import Link from "next/link";
 
+/**
+ * Render a responsive grid of cover letter cards or a placeholder when none exist.
+ *
+ * Each card shows the job title, company name, creation date, and actions to view or delete the cover letter.
+ * Deleting a cover letter prompts for confirmation, shows a success or error toast, and refreshes the list on success.
+ *
+ * @param {Object[]} coverLetters - Array of cover letter objects. Each object is expected to include:
+ *   - {string} id - Unique identifier.
+ *   - {string} [jobTitle] - Role title to display; falls back to "Untitled Role".
+ *   - {string} [companyName] - Company name to display; falls back to "Unknown Company".
+ *   - {string|number|Date} createdAt - Creation timestamp used for display.
+ * @returns {JSX.Element} The rendered cover letter list or an empty-state Card prompting creation.
+ */
 export default function CoverLetterList({ coverLetters }) {
   const router = useRouter();
 

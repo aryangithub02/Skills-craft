@@ -1,6 +1,12 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config({ path: ".env.local" });
 
+/**
+ * Runs a test of the Google Gemini generative model using GEMINI_API_KEY from the environment.
+ *
+ * If GEMINI_API_KEY is not set, the process exits with status 1. Initializes a GoogleGenerativeAI client,
+ * sends a short JSON-requesting prompt to the "gemini-2.0-flash-exp" model, and logs the model's response or any error.
+ */
 async function testGemini() {
     const apiKey = process.env.GEMINI_API_KEY;
 

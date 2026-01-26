@@ -5,6 +5,13 @@ import * as TabsPrimitive from "@radix-ui/react-tabs"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Render the root container for a tabbed interface.
+ *
+ * @param {string} [className] - Additional CSS classes to apply to the root container.
+ * @param {...any} props - Additional props forwarded to the underlying tabs root.
+ * @returns {JSX.Element} A React element representing the tabs root (includes `data-slot="tabs"`).
+ */
 function Tabs({
   className,
   ...props
@@ -17,6 +24,13 @@ function Tabs({
   );
 }
 
+/**
+ * Renders the tabs list container with default styling and optional additional classes.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional CSS class names appended to the default list styles.
+ * @returns {JSX.Element} A React element representing the tabs list.
+ */
 function TabsList({
   className,
   ...props
@@ -32,6 +46,13 @@ function TabsList({
   );
 }
 
+/**
+ * Render a styled tab trigger element for use within a Tabs component.
+ *
+ * @param {string} [className] - Additional class names appended to the default styling.
+ * @param {object} [props] - Remaining props forwarded to the trigger element.
+ * @returns {JSX.Element} A React element representing a tab trigger.
+ */
 function TabsTrigger({
   className,
   ...props
@@ -47,6 +68,13 @@ function TabsTrigger({
   );
 }
 
+/**
+ * Render the content panel for a tab.
+ *
+ * @param {string} [className] - Additional CSS classes applied to the content container.
+ * @param {Object} [props] - Additional props forwarded to the underlying TabsPrimitive.Content element.
+ * @returns {JSX.Element} The content panel element for a tab.
+ */
 function TabsContent({
   className,
   ...props

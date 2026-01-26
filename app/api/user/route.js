@@ -2,6 +2,11 @@ import { db } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
+/**
+ * Retrieves the authenticated user's public profile and returns it as JSON.
+ * @param {Request} request - Incoming Next.js request.
+ * @returns {NextResponse} JSON response containing the user object (id, name, email, experience, skills, industry) on success; otherwise an error message with an appropriate HTTP status (401, 404, or 500).
+ */
 export async function GET(request) {
   const session = await auth();
   const userId = session?.user?.id;

@@ -11,6 +11,17 @@ import { getAssessmentById, updateQuestionAnswerLocally, updateAllQuestionAnswer
 import { useSession } from "next-auth/react";
 import { Loader2, CheckCircle, Clock, ChevronLeft, ChevronRight, Play, RotateCcw } from "lucide-react";
 
+/**
+ * Render the interview session page that loads an assessment, presents questions one at a time,
+ * captures and persists user answers, manages timing and navigation, and triggers AI evaluation
+ * to produce post-interview feedback and scores.
+ *
+ * The component manages loading/error states, local answer tracking, question navigation,
+ * finishing workflow (save answers and invoke evaluation), and displays either the active
+ * interview UI or the completed results view.
+ *
+ * @returns {JSX.Element} The interview session page UI.
+ */
 export default function InterviewSessionPage() {
   const { assessmentId } = useParams();
   const router = useRouter();

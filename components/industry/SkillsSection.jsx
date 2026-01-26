@@ -2,6 +2,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, TrendingUp, Target } from "lucide-react";
 
+/**
+ * Render a three-panel skills overview showing top skills, key trends, and recommended skills.
+ *
+ * @param {{topSkills?: string[], keyTrends?: string[], recommendedSkills?: string[]}} insights - Collections used to populate each panel: `topSkills` and `recommendedSkills` are arrays of skill strings, and `keyTrends` is an array of trend strings. Each property is optional.
+ * @returns {JSX.Element} A React element containing three Card panels populated from the provided insights.
+ */
 export default function SkillsSection({ insights }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -59,6 +59,17 @@ const resumeSchema = z.object({
   achievements: z.string().optional(),
 });
 
+/**
+ * Render a form-driven resume editor with a live Markdown preview, save functionality, and AI-assisted summary improvement.
+ *
+ * Supports initializing from structured data or legacy Markdown (best-effort recovery), lets users edit contact info,
+ * summary, skills, experience, education, projects, certifications, and achievements, and generates Markdown from the form.
+ *
+ * @param {Object} props
+ * @param {string} [props.initialContent] - Optional Markdown string to preload into the preview; used for best-effort legacy recovery when `initialData` is not provided.
+ * @param {Object} [props.initialData] - Optional structured resume data to initialize the form; when present, this takes precedence over `initialContent`.
+ * @returns {JSX.Element} The Resume Builder UI component.
+ */
 export default function ResumeBuilder({ initialContent, initialData }) { // Added initialData
   const [activeTab, setActiveTab] = useState("edit");
   const [previewContent, setPreviewContent] = useState(initialContent || "");

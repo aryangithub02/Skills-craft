@@ -19,6 +19,14 @@ const formSchema = z.object({
   jobDescription: z.string().min(1, "Job Description is required"),
 });
 
+/**
+ * Render the New Cover Letter page that collects job details and creates a cover letter.
+ *
+ * The page displays a form with Job Title, Company Name, and Job Description fields validated by the shared schema.
+ * On successful submission it creates a cover letter and navigates to the new cover letter's page; on failure it shows an error toast.
+ *
+ * @returns {JSX.Element} The rendered New Cover Letter page component.
+ */
 export default function NewCoverLetterPage() {
   const router = useRouter();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({

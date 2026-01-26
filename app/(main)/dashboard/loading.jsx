@@ -1,5 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Render a skeleton UI for the dashboard loading state.
+ *
+ * @returns {JSX.Element} A React element containing placeholder Skeletons that mirror the dashboard layout while content is loading.
+ */
 export default function DashboardLoading() {
   return (
     <div className="container mx-auto p-6 space-y-6">
