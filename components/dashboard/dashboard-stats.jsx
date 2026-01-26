@@ -3,6 +3,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trophy, TrendingUp, Brain } from "lucide-react";
 
+/**
+ * Render a dashboard card summarizing assessment progress.
+ *
+ * Displays the average score, the latest score, the number of attempts, and an optional AI coach tip;
+ * if `assessments` is empty or falsy, renders a prompt encouraging the user to complete a mock interview.
+ *
+ * @param {Array<Object>} assessments - Array of assessment objects. Each object may include:
+ *   - {number} quizScore - The score for the assessment (percentage).
+ *   - {string} improvementTip - Optional AI coach tip for the assessment.
+ * @returns {JSX.Element} A Card element showing progress statistics or a prompt when no assessments are available.
+ */
 export default function DashboardStats({ assessments }) {
   const getStats = () => {
     if (!assessments || assessments.length === 0) {

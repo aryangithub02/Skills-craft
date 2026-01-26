@@ -5,6 +5,14 @@ const path = require('path');
 
 const prisma = new PrismaClient();
 
+/**
+ * Seed industry insights from the project's data/insights.json into the database via Prisma.
+ *
+ * Reads ../data/insights.json, upserts each insight into the `industryInsight` model keyed by `industry`,
+ * and sets `lastUpdated` to the current date and `nextUpdate` to 30 days from now for both create and update.
+ * Logs progress for each item. On error the process logs the failure and exits with code 1.
+ * Always disconnects the Prisma client when finished.
+ */
 async function main() {
     try {
         const filePath = path.join(__dirname, '../data/insights.json');

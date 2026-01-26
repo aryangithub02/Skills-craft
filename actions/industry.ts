@@ -2,6 +2,12 @@
 
 import { db } from "@/lib/prisma";
 
+/**
+ * Generate or update industry insights for the given industry by requesting structured JSON from an AI service, sanitizing enum fields and numeric values, and persisting the result to the database.
+ *
+ * @param industry - The industry name to analyze (e.g., "software", "agriculture")
+ * @returns The upserted industry insight database record, or `null` if generation or persistence failed
+ */
 export async function generateIndustryInsights(industry: string) {
     console.log(`🌽 Generating insights for: ${industry}`);
     const prompt = `

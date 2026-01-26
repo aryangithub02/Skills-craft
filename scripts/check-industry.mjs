@@ -1,6 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
+/**
+ * Checks the database for industryInsight records, logs the list of industries, and logs whether a "Technology" entry exists.
+ *
+ * Ensures the Prisma client is disconnected after the check and logs any encountered errors.
+ */
 async function check() {
     try {
         const industries = await prisma.industryInsight.findMany({

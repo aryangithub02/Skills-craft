@@ -20,6 +20,13 @@ const signUpSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+/**
+ * Render the sign-up page with form validation, submission handling, and navigation to the sign-in page on success.
+ *
+ * Renders a centered card containing name, email, and password fields validated by the zod schema via react-hook-form, displays field validation messages, shows a destructive alert when registration fails, presents a loading state while submitting, shows a success toast on successful registration, and redirects to "/sign-in".
+ *
+ * @returns {JSX.Element} The sign-up page component.
+ */
 export default function SignUpPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);

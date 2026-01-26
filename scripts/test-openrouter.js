@@ -1,5 +1,10 @@
 require("dotenv").config({ path: ".env.local" });
 
+/**
+ * Tests connectivity to the OpenRouter chat completions API using the OPENROUTER_API_KEY environment variable.
+ *
+ * If OPENROUTER_API_KEY is not set, the process exits with code 1. On success, prints the full JSON response and, if present, the first choice's message content. Errors encountered during the request are logged.
+ */
 async function testOpenRouter() {
     const apiKey = process.env.OPENROUTER_API_KEY;
 

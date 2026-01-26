@@ -6,6 +6,14 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '.env' });
 dotenv.config({ path: '.env.local', override: true });
 
+/**
+ * Prepare and log a local test scaffold for triggering industry insights generation for a sample industry.
+ *
+ * This function sets up a test scenario (using "Technology" as the example industry), logs intent to check existing
+ * insights, and documents considerations and pitfalls of invoking a Next.js server action from a standalone Node script.
+ * It does not call or force the generation action; the comments conclude that invoking the action via a Next.js API
+ * route is the safer approach.
+ */
 async function main() {
     console.log("🌽 Testing 'Corn Function' (Industry Insights Generation)...");
 

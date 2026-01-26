@@ -4,6 +4,16 @@ import React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * Render a card containing a bar chart of salary ranges by role with an Annual/Monthly view toggle.
+ *
+ * @param {Object[]} salaryRanges - Array of salary range objects (ordered by relevance).
+ * @param {string} salaryRanges[].role - Role name.
+ * @param {number} salaryRanges[].min - Minimum salary (annual, in rupees).
+ * @param {number} salaryRanges[].median - Median salary (annual, in rupees).
+ * @param {number} salaryRanges[].max - Maximum salary (annual, in rupees).
+ * @returns {JSX.Element} The rendered Card with the chart or a message when no data is available.
+ */
 export default function SalaryChart({ salaryRanges }) {
     const [view, setView] = React.useState('annual'); // 'annual' or 'monthly'
 

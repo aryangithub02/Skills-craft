@@ -5,9 +5,13 @@ import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
 /**
- * Saves or updates a user's resume content and structured data
- * @param {string} content - The markdown content of the resume
- * @param {object} resumeData - The structured form data (JSON) for re-editing
+ * Upserts the authenticated user's resume with the provided markdown content and structured form data.
+ * @param {string} content - The resume content in markdown.
+ * @param {object} resumeData - The structured JSON form data used for re-editing the resume.
+ * @returns {object} The upserted resume record.
+ * @throws {Error} "Unauthorized" when there is no authenticated user.
+ * @throws {Error} "User not found" when the authenticated user does not exist in the database.
+ * @throws {Error} "Failed to save resume" when the database upsert fails.
  */
 export async function saveResume(content, resumeData) {
     const session = await auth();
@@ -51,7 +55,14 @@ export async function saveResume(content, resumeData) {
 }
 
 /**
- * Fetches the current user's resume
+ * Retrieve the authenticated user's resume record.
+ *
+ * Looks up the current session's user, finds the corresponding user in the database,
+ * and returns the resume associated with that user. If the user exists but has no resume,
+ * returns `null`.
+ * @returns {Object|null} The resume record for the authenticated user, or `null` if not found.
+ * @throws {Error} "Unauthorized" if there is no authenticated user in the session.
+ * @throws {Error} If a database lookup fails.
  */
 export async function getResume() {
     const session = await auth();

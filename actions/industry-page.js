@@ -5,7 +5,8 @@ import { industries } from "@/data/industries";
 import { getSubIndustryTechStack } from "@/lib/industry-mapper";
 
 /**
- * Get all industries for the landing page
+ * Produce the landing-page list of industries merged with any stored insights.
+ * @returns {Promise<Array<{id: string, name: string, slug: string, growthRate: number|null, demandLevel: string|null, marketOutlook: string|null}>>} An array of industry objects where each item contains `id`, `name`, `slug` (same as `id`), and insight fields `growthRate`, `demandLevel`, and `marketOutlook`; insight fields are `null` when no stored insight exists.
  */
 export async function getAllIndustries() {
     const allInsights = await db.industryInsight.findMany({
@@ -32,8 +33,9 @@ export async function getAllIndustries() {
 }
 
 /**
- * Get overview for a broad industry category
- * @param {string} industrySlug - e.g., "tech", "healthcare"
+ * Retrieve an overview for a broad industry category identified by its slug.
+ * @param {string} industrySlug - The industry identifier/slug (e.g., "tech", "healthcare").
+ * @returns {object|null} An object containing `id`, `name`, `slug`, `subIndustries`, and an `insights` object with `salaryRanges`, `growthRate`, `demandLevel`, `topSkills`, `marketOutlook`, `keyTrends`, `recommendedSkills`, `lastUpdated`, and `nextUpdate`, or `null` if the industry or its insights are not found.
  */
 export async function getIndustryOverview(industrySlug) {
     // Find industry by slug
@@ -79,9 +81,34 @@ export async function getIndustryOverview(industrySlug) {
 import { generateIndustryInsights } from "@/actions/industry";
 
 /**
- * Get data for a specific sub-industry
- * @param {string} industrySlug - e.g., "tech"
- * @param {string} subIndustrySlug - e.g., "software-development"
+ * Retrieve details, insights, and tech stack for a specific sub-industry.
+ *
+ * @param {string} industrySlug - Parent industry identifier (e.g., "tech").
+ * @param {string} subIndustrySlug - Sub-industry identifier (e.g., "software-development").
+ * @returns {Object|null} An object containing sub-industry data or `null` if the parent industry, sub-industry, or insights cannot be resolved.
+ *
+ * Returned object shape:
+ * {
+ *   industryId: string,
+ *   industryName: string,
+ *   subIndustrySlug: string,
+ *   subIndustryName: string,
+ *   insights: {
+ *     salaryRanges: any,
+ *     growthRate: any,
+ *     demandLevel: any,
+ *     marketOutlook: any,
+ *     keyTrends: any,
+ *     lastUpdated: any
+ *   },
+ *   techStack: {
+ *     primarySkills: any,
+ *     techStack: any,
+ *     tools: any,
+ *     frameworks: any,
+ *     certifications: any
+ *   } | null
+ * }
  */
 export async function getSubIndustryData(industrySlug, subIndustrySlug) {
     // Get broad industry insights
@@ -154,8 +181,9 @@ export async function getSubIndustryData(industrySlug, subIndustrySlug) {
 }
 
 /**
- * Get sub-industries for an industry (for explorer grid)
- * @param {string} industrySlug
+ * Retrieve sub-industry summaries for a given industry.
+ * @param {string} industrySlug - The industry's id/slug to look up.
+ * @returns {Array<{name: string, slug: string, growth: number|null, demand: string|null, industrySlug: string}>} An array of sub-industry objects each with `name`, `slug`, `growth`, `demand`, and `industrySlug`; returns an empty array if the industry is not found.
  */
 export async function getSubIndustries(industrySlug) {
     const industry = industries.find(i => i.id === industrySlug);

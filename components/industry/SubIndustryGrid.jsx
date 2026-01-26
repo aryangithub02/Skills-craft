@@ -3,6 +3,16 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { ArrowRight, TrendingUp } from "lucide-react";
 
+/**
+ * Render a responsive grid of sub-industry cards for a given industry.
+ *
+ * @param {Object} props
+ * @param {string} props.industrySlug - Slug of the parent industry used to build each sub-industry link.
+ * @param {Array<{slug: string, name: string, demand: string, growth?: number}>} props.subIndustries - List of sub-industry objects to display. Each item must include `slug`, `name`, and `demand`; `growth` is optional.
+ * @param {string} [props.demandLevel] - Optional overall demand level (provided to the component; not required for rendering individual cards).
+ * @param {number} [props.growthRate] - Optional overall growth rate (provided to the component; not required for rendering individual cards).
+ * @returns {JSX.Element} The rendered grid of sub-industry cards with demand badges, optional growth indicators, and links to sub-industry pages.
+ */
 export default function SubIndustryGrid({ industrySlug, subIndustries, demandLevel, growthRate }) {
     return (
         <div>

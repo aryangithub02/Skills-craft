@@ -6,12 +6,24 @@ import { ChevronDownIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Render the accordion root element, applying a data-slot attribute and forwarding any provided props.
+ * @param {object} props - Props to spread onto the accordion root element.
+ * @returns {JSX.Element} A React element representing the accordion root.
+ */
 function Accordion({
   ...props
 }) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
 }
 
+/**
+ * Render a styled accordion item wrapper that applies base border styles and forwards all props to the rendered element.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional CSS classes to merge with the default border styles.
+ * @returns {JSX.Element} A React element representing a styled accordion item.
+ */
 function AccordionItem({
   className,
   ...props
@@ -24,6 +36,15 @@ function AccordionItem({
   );
 }
 
+/**
+ * Render an accordion header containing a styled trigger and a chevron icon that rotates when open.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional class names applied to the trigger element.
+ * @param {import('react').ReactNode} [props.children] - Content displayed inside the trigger.
+ * @param {...any} [props.rest] - Additional props forwarded to the underlying trigger element.
+ * @returns {JSX.Element} The rendered accordion header and trigger element.
+ */
 function AccordionTrigger({
   className,
   children,
@@ -46,6 +67,14 @@ function AccordionTrigger({
   );
 }
 
+/**
+ * Renders the accordion content area with state-driven open/close animations and inner padding.
+ *
+ * @param {string} [className] - Additional class names applied to the inner content wrapper.
+ * @param {import('react').ReactNode} [children] - Elements displayed inside the accordion content.
+ * @param {...any} props - Props forwarded to the underlying AccordionPrimitive.Content element.
+ * @returns {JSX.Element} The rendered accordion content element.
+ */
 function AccordionContent({
   className,
   children,

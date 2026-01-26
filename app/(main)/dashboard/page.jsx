@@ -9,6 +9,17 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+/**
+ * Render the dashboard page for an authenticated, onboarded user.
+ *
+ * If no authenticated user exists, redirects to the sign-in route; if the user
+ * exists but has not selected an industry, redirects to onboarding. When rendered,
+ * fetches industry insights, the user's resume, and the latest five assessments,
+ * then displays a responsive dashboard with resume, interview, cover letter,
+ * industry insights, profile, and progress cards.
+ *
+ * @returns {JSX.Element|void} The dashboard page React element, or performs a redirect to sign-in or onboarding. 
+ */
 export default async function DashboardPage() {
   // Check if user is in DB and onboarded using checkUser
   const user = await checkUser();

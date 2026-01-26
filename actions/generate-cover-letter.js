@@ -3,6 +3,19 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@/auth";
 
+/**
+ * Generate a professional cover letter in markdown using the provided job details and the authenticated user's most recent resume.
+ *
+ * @param {Object} data - Job information used to tailor the cover letter.
+ * @param {string} data.jobTitle - The title of the job being applied for.
+ * @param {string} data.companyName - The target company's name.
+ * @param {string} data.jobDescription - The full job description or requirements.
+ * @returns {string} The generated cover letter content formatted in markdown.
+ * @throws {Error} "Unauthorized" if there is no authenticated user session.
+ * @throws {Error} "User not found" if the authenticated user cannot be found in the database.
+ * @throws {Error} "OpenRouter API Error: <message>" if the external API responds with a non-OK status.
+ * @throws {Error} "Failed to generate cover letter" for other failures during generation or processing.
+ */
 export async function generateCoverLetter(data) {
     const session = await auth();
     if (!session?.user?.id) throw new Error("Unauthorized");

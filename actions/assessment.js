@@ -7,7 +7,21 @@ import { evaluateAnswers } from "@/lib/ai/evaluateAnswers";
 import { mapToInsightCategory } from "@/lib/industry-mapper";
 
 /**
- * Creates a new assessment and generates questions using AI in one consolidated step
+ * Create an assessment for the current authenticated user and persist AI-generated interview questions.
+ * @param {Object} assessmentData - Data used to generate and categorize the assessment.
+ * @param {string} assessmentData.industry - User's industry for category and AI prompt.
+ * @param {string} assessmentData.domain - Domain or role focus for the assessment.
+ * @param {string} [assessmentData.specificTopic] - Optional specific topic to include in the category and topics tested.
+ * @param {number} [assessmentData.experience] - Years of experience to inform AI question generation.
+ * @param {string} [assessmentData.interviewType] - Interview style to request from the AI (e.g., "technical", "behavioral", "mixed").
+ * @param {string} [assessmentData.difficulty] - Desired difficulty level for the assessment (e.g., "easy", "medium", "hard").
+ * @returns {Object} Result object.
+ * @returns {boolean} return.success - `true` on success, `false` on failure.
+ * @returns {string} [return.assessmentId] - ID of the created assessment when successful.
+ * @returns {number} [return.questionsCount] - Number of questions saved when successful.
+ * @returns {string} [return.error] - Error message when `success` is `false`.
+ * @throws {Error} "Unauthorized" if there is no authenticated user.
+ * @throws {Error} "User not found in database" if the authenticated user cannot be loaded from the database.
  */
 export async function createAssessment(assessmentData) {
   const session = await auth();
@@ -112,7 +126,21 @@ export async function createAssessment(assessmentData) {
 }
 
 /**
- * Updates an assessment with generated questions
+ * Replace an assessment's stored questions with the provided list after normalizing each question's fields.
+ *
+ * @param {string} assessmentId - The ID of the assessment to update.
+ * @param {Array<Object>} questions - Array of question objects to store. Each object may include:
+ *   - {string} type
+ *   - {string} difficulty
+ *   - {string} question
+ *   - {string} userAnswer
+ *   - {number|null} score
+ *   - {string} feedback
+ *   - {Array<any>} options
+ *   - {string} correctAnswer
+ *   - {string} explanation
+ * @returns {{ success: true, assessmentId: string }} Object containing a success flag and the updated assessment ID.
+ * @throws {Error} If the caller is not authenticated or if the database update fails.
  */
 export async function updateAssessmentWithQuestions(assessmentId, questions) {
   const session = await auth();
@@ -146,8 +174,11 @@ export async function updateAssessmentWithQuestions(assessmentId, questions) {
 }
 
 /**
- * Updates a specific question's user answer in an assessment (client-side only)
- * Actual database update happens when user submits all answers
+ * Prepare a local payload for updating a single question's user answer without persisting it to the database.
+ * @param {string} assessmentId - The ID of the assessment to which the question belongs.
+ * @param {number} questionIndex - The zero-based index of the question within the assessment's questions array.
+ * @param {string} userAnswer - The user's answer for the specified question.
+ * @returns {{success: boolean, assessmentId: string, questionIndex: number, userAnswer: string}} An object echoing the prepared update payload.
  */
 export async function updateQuestionAnswerLocally(assessmentId, questionIndex, userAnswer) {
   // This function only validates and prepares data for bulk update
@@ -156,7 +187,10 @@ export async function updateQuestionAnswerLocally(assessmentId, questionIndex, u
 }
 
 /**
- * Generates interview questions using AI and updates the assessment
+ * Generate AI interview questions for an existing assessment and persist them.
+ * @param {string} assessmentId - ID of the assessment to update.
+ * @returns {{success: boolean, questions: Array}} Object containing a `success` flag and the array of generated questions.
+ * @throws {Error} If the user is unauthorized, the assessment is not found, or question generation/storage fails.
  */
 export async function generateAndStoreQuestions(assessmentId) {
   const session = await auth();
@@ -220,7 +254,15 @@ export async function generateAndStoreQuestions(assessmentId) {
 }
 
 /**
- * Evaluates all answers in an assessment and updates scores
+ * Evaluate every answer in an assessment, compute per-question scores and overall score, and persist feedback to the database.
+ *
+ * Attempts an AI-based evaluation with personalized feedback and deterministic MCQ scoring; falls back to a deterministic matching evaluation if the AI call fails. Requires all questions to have user answers and updates the assessment's `questions`, `quizScore`, and `improvementTip`.
+ *
+ * @param {string} assessmentId - The ID of the assessment to evaluate.
+ * @returns {{ success: true, assessmentId: string, quizScore: number }} Result containing the updated assessment ID and computed overall score.
+ * @throws {Error} If the caller is unauthorized.
+ * @throws {Error} If the assessment is missing or contains no questions.
+ * @throws {Error} If any question is missing a user answer.
  */
 export async function evaluateAssessment(assessmentId) {
   const session = await auth();
@@ -343,7 +385,13 @@ export async function evaluateAssessment(assessmentId) {
 }
 
 /**
- * Updates all question answers in an assessment at once
+ * Apply a set of user answers to an assessment's questions, compute immediate MCQ scores/feedback, and persist the updated questions.
+ *
+ * @param {string} assessmentId - The ID of the assessment to update.
+ * @param {{questionIndex: number, userAnswer: string}[]} answers - Array of answers specifying the question index and the user's answer.
+ * @returns {{success: true, assessmentId: string}} Object containing success status and the updated assessment ID.
+ * @throws {Error} "Unauthorized" if the user is not authenticated.
+ * @throws {Error} "Assessment not found" if no assessment exists for the given ID.
  */
 export async function updateAllQuestionAnswers(assessmentId, answers) {
   const session = await auth();
@@ -404,7 +452,31 @@ export async function updateAllQuestionAnswers(assessmentId, answers) {
 }
 
 /**
- * Retrieves an assessment by ID
+ * Fetches an assessment by ID and returns a sanitized assessment object with normalized questions and ISO timestamps.
+ * @param {string} assessmentId - The ID of the assessment to retrieve.
+ * @returns {Object|null} The assessment object or `null` if not found.
+ *  The returned object includes:
+ *   - id: Assessment ID.
+ *   - userId: ID of the user who owns the assessment.
+ *   - quizScore: Numeric score for the assessment, or `null` if not graded.
+ *   - category: Category string assigned to the assessment.
+ *   - improvementTip: Textual improvement tip for the user, if available.
+ *   - interviewType: Type of interview for which the assessment was generated.
+ *   - difficulty: Assessment difficulty.
+ *   - questions: Array of sanitized question objects with:
+ *       - type: Question type.
+ *       - difficulty: Question difficulty.
+ *       - question: Question text.
+ *       - userAnswer: User's answer.
+ *       - score: Numeric score for the question or `null`.
+ *       - feedback: Feedback text.
+ *       - options: Array of options (for MCQs).
+ *       - correctAnswer: Correct answer (if present).
+ *       - explanation: Explanation for the correct answer.
+ *   - userName: Name of the assessment owner (if available).
+ *   - userExperience: Owner's experience value (if available).
+ *   - createdAt: ISO string of creation time.
+ *   - updatedAt: ISO string of last update time (when returned).
  */
 export async function getAssessmentById(assessmentId) {
   try {
@@ -463,7 +535,10 @@ export async function getAssessmentById(assessmentId) {
 }
 
 /**
- * Retrieves all assessments for a user
+ * Fetches all assessments belonging to the authenticated user.
+ *
+ * @returns {Array<Object>} An array of assessment records; each includes all stored fields with `createdAt` and `updatedAt` serialized as ISO strings. Returns an empty array when there is no authenticated user.
+ * @throws {Error} If the user record cannot be found or if the database query fails.
  */
 export async function getUserAssessments() {
   const session = await auth();
@@ -498,7 +573,19 @@ export async function getUserAssessments() {
 }
 
 /**
- * Retrieves assessment statistics for a user
+ * Compute aggregated assessment statistics for the currently authenticated user.
+ *
+ * Returns the total number of assessments, the count of completed assessments
+ * (those with a non-null `quizScore`), and the average score across completed
+ * assessments rounded to two decimal places.
+ *
+ * @returns {{ totalAssessments: number, completedAssessments: number, averageScore: number }}
+ *   An object containing:
+ *   - totalAssessments: total number of assessments for the user.
+ *   - completedAssessments: number of assessments with a non-null `quizScore`.
+ *   - averageScore: average `quizScore` across completed assessments, rounded to two decimals (0 if none).
+ *
+ * @throws {Error} If the authenticated user cannot be found or a database error occurs.
  */
 export async function getUserAssessmentStats() {
   const session = await auth();

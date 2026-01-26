@@ -3,6 +3,13 @@ import { db } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import ProfileForm from "./_components/profile-form";
 
+/**
+ * Render the account settings page for the authenticated user.
+ *
+ * If no authenticated session exists, the request is redirected to "/sign-in".
+ *
+ * @returns {JSX.Element} A container element with the "Account Settings" header and a ProfileForm populated with the authenticated user's data.
+ */
 export default async function AccountPage() {
   const session = await auth();
 

@@ -6,6 +6,17 @@ import { generateIndustryInsights } from "./industry";
 import { mapToInsightCategory } from "@/lib/industry-mapper";
 import { industries } from "@/data/industries";
 
+/**
+ * Retrieve the authenticated user's industry insights, triggering background generation if insights are missing or stale.
+ *
+ * If insights exist, returns the stored industry insight augmented with a `routing` object containing:
+ * - `industryId`: canonical industry identifier
+ * - `subIndustrySlug`: user's sub-industry slug derived from their stored industry value
+ *
+ * Returns null when there is no authenticated user, the user's industry cannot be determined or mapped, insights are not yet available (after scheduling background generation), or an error occurs.
+ *
+ * @returns {Object|null} The industry insight record merged with a `routing` object, or `null` when insights are unavailable or on error.
+ */
 export async function getIndustryInsights() {
     try {
         const session = await auth();

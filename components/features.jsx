@@ -32,6 +32,15 @@ const features = [
   },
 ];
 
+/**
+ * Render a responsive features section showcasing four product features as interactive cards.
+ *
+ * The section includes a centered header with a title and subtitle, followed by a responsive grid
+ * of feature cards (1–4 columns depending on screen size). Each card displays an icon, title,
+ * description, and a decorative gradient overlay that animates on hover.
+ *
+ * @returns {JSX.Element} The features section element containing the header and feature cards.
+ */
 export default function FeaturesSection() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-background" id="features">
@@ -67,5 +76,4 @@ export default function FeaturesSection() {
     </section>
   );
 };
-
 

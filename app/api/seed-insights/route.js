@@ -6,6 +6,18 @@ import { getAllInsightCategories } from "@/lib/industry-mapper";
 // Get all insight categories from the industries definition
 const allIndustries = getAllInsightCategories();
 
+/**
+ * Handle GET requests to seed industry insights in parallel with a concurrency limit.
+ *
+ * Supports an optional `retry` query parameter (e.g., `?retry=Healthcare,Retail`) to process only the listed industries; when omitted, all known insight categories are processed.
+ *
+ * @param {Request} request - Incoming request containing the URL and optional `retry` query parameter.
+ * @returns {NextResponse} A JSON response with a `message` summarizing how many industries succeeded and `results`, an array of per-industry result objects:
+ * - `industry` (string): industry name processed.
+ * - `success` (boolean): `true` if generation succeeded, `false` if an error occurred.
+ * - `data` (object, present when `success` is `true`): includes `growthRate`, `demandLevel`, and `topSkills` (top 3 skills).
+ * - `error` (string, present when `success` is `false`): error message describing the failure.
+ */
 export async function GET(request) {
     try {
         // Support selective retry via query param: ?retry=Healthcare,Retail,Legal

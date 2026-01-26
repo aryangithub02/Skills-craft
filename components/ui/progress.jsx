@@ -5,6 +5,14 @@ import * as ProgressPrimitive from "@radix-ui/react-progress"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Render a styled progress bar whose filled portion corresponds to the provided numeric value.
+ *
+ * @param {string} [className] - Additional CSS classes to apply to the root progress element.
+ * @param {number} [value] - Progress value between 0 and 100; treated as 0 when undefined. Higher values reveal more of the filled indicator.
+ * @param {object} [props] - Additional props spread onto the root progress element.
+ * @returns {JSX.Element} The rendered progress bar element.
+ */
 function Progress({
   className,
   value,

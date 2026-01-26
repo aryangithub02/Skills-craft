@@ -27,6 +27,12 @@ import {
 import { checkUser } from "@/lib/checkUser";
 import UserButton from "@/components/user-button";
 
+/**
+ * Renders the responsive application header with branding, theme toggle, navigation, user auth controls, and a mobile sheet menu.
+ *
+ * The header updates its visual style on scroll, switches logos by theme, synchronizes user data when a session is present, and hides server-only UI until client mount to avoid SSR mismatches.
+ * @returns {JSX.Element} The header element containing navigation links, theme toggle, authentication controls, and the mobile navigation sheet.
+ */
 export default function Header() {
   const { theme, resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);

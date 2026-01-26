@@ -1,5 +1,10 @@
 import { db } from "../lib/prisma.js";
 
+/**
+ * Prints a formatted status report of industry insights by comparing stored insights to a fixed list of industries and closes the database connection.
+ *
+ * The report lists generated insights with growth rate and demand level and highlights any industries that are missing insights.
+ */
 async function checkInsights() {
     const allIndustries = [
         'Technology',

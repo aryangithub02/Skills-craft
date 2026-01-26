@@ -3,6 +3,16 @@ import { NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 
+/**
+ * Seed industry insights into the database from the local data/insights.json file.
+ *
+ * Reads data/insights.json, upserts each insight into the Prisma `industryInsight` model
+ * (matching by `industry`) and sets `lastUpdated` to now and `nextUpdate` to 30 days from now.
+ *
+ * @returns {import('next/server').NextResponse} An HTTP JSON response:
+ * - On success: `{ success: true, message: string }` where `message` reports the number seeded.
+ * - On failure: `{ success: false, error: string, cwd: string, pathAttempted: string }`.
+ */
 export async function GET() {
     try {
         const filePath = path.join(process.cwd(), 'data/insights.json');

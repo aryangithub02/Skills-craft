@@ -18,6 +18,15 @@ const signInSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+/**
+ * Render the sign-in page with credential and Google authentication flows.
+ *
+ * Provides a form validated by Zod/react-hook-form for email and password, a Google
+ * sign-in button, loading state handling, and toast notifications; successful
+ * sign-in navigates to the dashboard.
+ *
+ * @returns {JSX.Element} The sign-in page UI.
+ */
 export default function SignInPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);

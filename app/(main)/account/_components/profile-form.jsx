@@ -27,6 +27,17 @@ const profileSchema = z.object({
   image: z.string().url("Invalid URL").optional().or(z.literal("")),
 });
 
+/**
+ * Render a profile information card that supports viewing and editing user details.
+ *
+ * @param {Object} props.user - User data used to initialize form fields and avatar.
+ * @param {string} [props.user.name] - User's full name (editable).
+ * @param {string} [props.user.email] - User's email (read-only).
+ * @param {string} [props.user.bio] - User biography (editable).
+ * @param {string} [props.user.industry] - Industry id used to select the user's industry.
+ * @param {string} [props.user.image] - URL for the user's avatar image (editable).
+ * @returns {JSX.Element} A React element rendering the profile form with view/edit toggle, validation, and save behavior.
+ */
 export default function ProfileForm({ user }) {
   const { update } = useSession();
   const router = useRouter();

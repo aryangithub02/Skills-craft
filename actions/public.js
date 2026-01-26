@@ -2,6 +2,15 @@
 
 import { db } from "@/lib/prisma";
 
+/**
+ * Compute landing page statistics from industry insight records.
+ *
+ * Aggregates up to 50 industryInsight records to produce total industries, average growth rate,
+ * the most frequent demand level, and a representative top skill. On an empty database or on error,
+ * returns predefined fallback statistics.
+ *
+ * @returns {{industries: number|string, growthRate: number, demandLevel: string, topSkill: string}} An object with aggregated stats: `industries` is the total count (or "50+" in the error fallback), `growthRate` is the average growth rounded to one decimal, `demandLevel` is the most frequent demand level (or "High"), and `topSkill` is a representative skill string.
+ */
 export async function getLandingPageStats() {
     try {
         // Check if we have any data

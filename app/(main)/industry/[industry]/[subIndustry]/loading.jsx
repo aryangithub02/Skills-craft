@@ -1,5 +1,14 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Render a skeleton loading placeholder for the sub-industry detail page.
+ *
+ * The UI mirrors the page layout with a hero section and a responsive three-column
+ * content grid, using Skeleton elements to indicate loading states for title,
+ * controls, tech stack, salary visualization, and trends.
+ *
+ * @returns {JSX.Element} A JSX element representing the loading skeleton UI.
+ */
 export default function SubIndustryDetailLoading() {
   return (
     <div className="container mx-auto p-6 space-y-8">

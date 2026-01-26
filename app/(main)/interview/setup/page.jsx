@@ -12,6 +12,11 @@ import { createAssessment, generateAndStoreQuestions } from "@/actions/assessmen
 import { useSession, signIn } from "next-auth/react";
 
 
+/**
+ * Render the mock interview setup page that lets authenticated users configure industry, domain, specific topic, interview type, and years of experience, create an assessment, and navigate to a generated interview session; unauthenticated users are prompted to sign in.
+ *
+ * @returns {JSX.Element} The Interview Setup page UI, including the configuration form for signed-in users and a sign-in prompt for guests.
+ */
 export default function InterviewSetupPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -364,4 +369,3 @@ export default function InterviewSetupPage() {
     </div>
   );
 }
-

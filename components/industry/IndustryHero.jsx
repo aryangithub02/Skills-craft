@@ -2,6 +2,12 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Calendar } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
+/**
+ * Render a hero section for an industry showing its name, demand/market/growth badges, and a relative last-updated time.
+ * @param {{ name: string }} industry - Object containing the industry's `name`.
+ * @param {{ demandLevel: 'High'|'Medium'|'Low'|string, marketOutlook: 'High'|'Medium'|'Low'|string, growthRate: number, lastUpdated: string|number|Date }} insights - Metrics used to drive badge text and styling and the `lastUpdated` timestamp.
+ * @returns {JSX.Element} The rendered IndustryHero component.
+ */
 export default function IndustryHero({ industry, insights }) {
     return (
         <div className="bg-gradient-to-br from-primary/10 via-background to-background border-b">

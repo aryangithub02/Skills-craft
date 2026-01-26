@@ -18,6 +18,11 @@ const industries = [
     'Legal',
 ];
 
+/**
+ * Iterate over the predefined industries, generate insights for each using Gemini AI, log key fields, and exit the process when complete.
+ *
+ * For each industry this function logs the growth rate, demand level, and the first three top skills; it pauses briefly between requests to mitigate rate limiting and continues to the next industry on per-industry errors.
+ */
 async function seedIndustryInsights() {
     console.log('🌱 Starting industry insights generation with Gemini AI...\n');
 

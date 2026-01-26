@@ -6,30 +6,60 @@ import { XIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Renders the dialog root element and marks it with a stable data-slot for composition.
+ * @param {object} props - Props forwarded to the underlying DialogPrimitive.Root (e.g., children, open, onOpenChange).
+ * @returns {JSX.Element} The DialogPrimitive.Root element with data-slot="dialog".
+ */
 function Dialog({
   ...props
 }) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
 
+/**
+ * Renders a Radix Dialog Trigger element with data-slot="dialog-trigger" and forwards all received props to it.
+ * @param {object} props - Props to forward to the underlying DialogTrigger (e.g., event handlers, className, children).
+ * @returns {JSX.Element} The rendered Dialog Trigger element.
+ */
 function DialogTrigger({
   ...props
 }) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
 }
 
+/**
+ * Renders the dialog portal element.
+ * @param {object} props - Props forwarded to the underlying portal element.
+ * @returns {JSX.Element} The portal element with `data-slot="dialog-portal"` and forwarded props.
+ */
 function DialogPortal({
   ...props
 }) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
 }
 
+/**
+ * Renders a dialog close control with the data-slot "dialog-close".
+ *
+ * @param {object} props - Props forwarded to the close control element (e.g., `className`, event handlers).
+ * @returns {JSX.Element} A React element that closes the dialog when activated.
+ */
 function DialogClose({
   ...props
 }) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
+/**
+ * Render a fullscreen dialog backdrop with built-in animation and default styling.
+ *
+ * Merges any provided `className` with the component's default utility classes and forwards remaining props to the underlying Radix Overlay.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional CSS classes to merge with the default overlay styles.
+ * @returns {JSX.Element} The rendered DialogPrimitive.Overlay element with a `data-slot="dialog-overlay"` attribute.
+ */
 function DialogOverlay({
   className,
   ...props
@@ -45,6 +75,15 @@ function DialogOverlay({
   );
 }
 
+/**
+ * Render dialog content inside a portal with an overlay and an optional close button.
+ *
+ * @param {string} [className] - Additional class names merged into the dialog content container.
+ * @param {import('react').ReactNode} [children] - Elements to render inside the dialog content.
+ * @param {boolean} [showCloseButton=true] - When true, renders a built-in close button in the top-right corner.
+ * @param {object} [props] - Additional props forwarded to the underlying DialogPrimitive.Content element.
+ * @returns {JSX.Element} The composed dialog content element including portal, overlay, and content.
+ */
 function DialogContent({
   className,
   children,
@@ -75,6 +114,13 @@ function DialogContent({
   );
 }
 
+/**
+ * Renders the dialog header container with default layout and responsive text alignment.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional CSS class names to merge with the default header classes.
+ * @returns {JSX.Element} A div element with data-slot="dialog-header" and composed class names.
+ */
 function DialogHeader({
   className,
   ...props
@@ -87,6 +133,14 @@ function DialogHeader({
   );
 }
 
+/**
+ * Renders a responsive dialog footer container that stacks controls vertically on small screens
+ * and lays them out horizontally, justified to the end, on larger screens.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} [props.className] - Additional class names to apply to the footer container.
+ * @returns {JSX.Element} The dialog footer container element.
+ */
 function DialogFooter({
   className,
   ...props
@@ -99,6 +153,13 @@ function DialogFooter({
   );
 }
 
+/**
+ * Renders a styled dialog title element.
+ *
+ * @param {string} [className] - Additional CSS class names to append to the default title classes.
+ * @param {object} [props] - Additional props forwarded to the underlying DialogPrimitive.Title.
+ * @returns {JSX.Element} The rendered dialog title element.
+ */
 function DialogTitle({
   className,
   ...props
@@ -111,6 +172,12 @@ function DialogTitle({
   );
 }
 
+/**
+ * Renders a dialog description element with default muted, small text styling.
+ * @param {string} [className] - Additional class names to append to the default styling.
+ * @param {object} [props] - Additional props forwarded to the underlying description element.
+ * @returns {JSX.Element} The rendered dialog description element.
+ */
 function DialogDescription({
   className,
   ...props

@@ -6,6 +6,14 @@ import { FileDown, Edit, Eye } from "lucide-react";
 import MDEditor from "@uiw/react-md-editor";
 import { toast } from "sonner";
 
+/**
+ * Renders a Markdown editor and read-only preview with an edit/view toggle and a PDF export action.
+ *
+ * @param {string} content - Markdown source to display and edit.
+ * @param {boolean} [isPreviewMode=false] - Optional hint for initial preview mode (not required for internal toggle).
+ * @param {(next: string) => void} onChange - Callback invoked with updated Markdown when the editor content changes.
+ * @return {JSX.Element} The ResumePreview component UI.
+ */
 export default function ResumePreview({ content, isPreviewMode = false, onChange }) { 
   const [isEditable, setIsEditable] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);

@@ -2,6 +2,12 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Render a styled textarea that merges default utility classes with any additional classes and forwards all other props.
+ * @param {string} className - Additional CSS classes to append to the component's default class list.
+ * @param {object} props - Additional props forwarded to the underlying textarea element (e.g., value, onChange, placeholder, rows).
+ * @returns {JSX.Element} The rendered textarea element.
+ */
 function Textarea({
   className,
   ...props
