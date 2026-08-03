@@ -115,7 +115,7 @@ export default function IndustryPreview() {
 
             {/* Recharts Salary Graph */}
             <div className="h-72 w-full pt-4">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                 {activeTab === "salary" ? (
                   <AreaChart data={SALARY_DATA}>
                     <defs>

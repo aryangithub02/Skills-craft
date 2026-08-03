@@ -14,7 +14,7 @@ export default async function DashboardPage() {
   const user = await checkUser();
 
   if (!user) {
-    return redirect("/api/auth/signin");
+    return redirect("/sign-in");
   }
 
   if (!user.industry) {

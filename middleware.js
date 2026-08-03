@@ -11,10 +11,12 @@ export default auth((req) => {
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/interview") ||
     pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/resume") ||
+    pathname.startsWith("/cover-letter") ||
     pathname.startsWith("/ai-cover-letter");
 
   if (isProtectedRoute && !isLoggedIn) {
-    return Response.redirect(new URL("/api/auth/signin", req.nextUrl));
+    return Response.redirect(new URL("/sign-in", req.nextUrl));
   }
 });
 

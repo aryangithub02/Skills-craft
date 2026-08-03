@@ -1,6 +1,7 @@
 import Google from "next-auth/providers/google";
 
 export default {
+    trustHost: true,
     secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "complex_fallback_secret_for_build_phase_32chars",
     providers: [
         Google({

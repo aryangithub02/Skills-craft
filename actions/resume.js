@@ -57,7 +57,7 @@ export async function getResume() {
     const session = await auth();
 
     if (!session?.user) {
-        throw new Error("Unauthorized");
+        return null;
     }
     const userId = session.user.id;
 
