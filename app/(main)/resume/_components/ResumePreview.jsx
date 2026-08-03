@@ -23,7 +23,11 @@ export default function ResumePreview({ content, isPreviewMode = false, onChange
     iframe.style.border = 'none';
     document.body.appendChild(iframe);
 
-    const content = element.innerHTML;
+    const content = element.innerHTML
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+        .replace(/on\w+="[^"]*"/gi, "")
+        .replace(/on\w+='[^']*'/gi, "")
+        .replace(/javascript:/gi, "");
     const doc = iframe.contentWindow.document;
 
     doc.open();

@@ -10,14 +10,32 @@ export const revalidate = 0;
 const allIndustries = getAllInsightCategories();
 
 export async function GET(request) {
+    if (process.env.NODE_ENV === "production") {
+        const { searchParams } = new URL(request.url);
+        const secret = searchParams.get("secret");
+        if (!process.env.ADMIN_SECRET || secret !== process.env.ADMIN_SECRET) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+    }
+
     try {
         // Support selective retry via query param: ?retry=Healthcare,Retail,Legal
         const { searchParams } = new URL(request.url);
         const retryParam = searchParams.get('retry');
 
         const industries = retryParam
-            ? retryParam.split(',').map(i => i.trim())
+            ? retryParam
+                .split(',')
+                .map(i => i.trim())
+                .filter(i => allIndustries.includes(i))
             : allIndustries;
+
+        if (industries.length === 0) {
+            return NextResponse.json(
+                { error: "No valid industry names provided in retry parameter." },
+                { status: 400 }
+            );
+        }
 
         console.log(`🚀 Starting parallel generation for ${industries.length} industries...`);
 

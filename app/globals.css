@@ -47,14 +47,14 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --radius: 0.75rem;
+  --background: oklch(0.985 0.002 240);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.488 0.243 264.376);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -65,54 +65,28 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --ring: oklch(0.488 0.243 264.376);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.12 0.01 260);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.16 0.01 260);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.16 0.01 260);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --primary: oklch(0.55 0.22 264);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.2 0.01 260);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --muted: oklch(0.2 0.01 260);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: oklch(0.2 0.01 260);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --ring: oklch(0.55 0.22 264);
 }
 
 @layer base {
@@ -120,62 +94,232 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased text-base leading-relaxed;
   }
 }
 
-/* Grid Background */
-.grid-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    linear-gradient(to right, rgba(128, 128, 128, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(128, 128, 128, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-  pointer-events: none;
-  z-index: -1;
+/* Enterprise Clean Card Styles (Replaces White Neumorphism Halos) */
+.neo-surface {
+  background: #ffffff;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(226, 232, 240, 0.9);
 }
 
-@layer utilities {
-  .animate-gradient {
-    background-size: 300%;
-    animation: gradient 8s ease infinite;
+.dark .neo-surface {
+  background: #13141f;
+  box-shadow: 0 12px 36px -12px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.neo-inset {
+  background: #f8fafc;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .neo-inset {
+  background: #0b0c14;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.neo-button-primary {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  transition: all 0.2s ease-in-out;
+}
+
+.neo-button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+}
+
+.neo-button-primary:active {
+  transform: translateY(0);
+}
+
+.neo-button-secondary {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.dark .neo-button-secondary {
+  background: #1a1b2b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+}
+
+.neo-button-secondary:hover {
+  background: #f8fafc;
+}
+
+.dark .neo-button-secondary:hover {
+  background: #232438;
+}
+
+/* Formatted DOCX Document Canvas */
+.docx-document-canvas h1 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  margin-bottom: 0.75rem;
+  color: #4f46e5;
+}
+
+.docx-document-canvas h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.25rem;
+}
+
+.dark .docx-document-canvas h2 {
+  border-bottom-color: #334155;
+}
+
+.docx-document-canvas p {
+  margin-bottom: 0.5rem;
+}
+
+.docx-document-canvas ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.docx-document-canvas li {
+  margin-bottom: 0.25rem;
+}
+
+/* ============================================================================
+   SkillsCraft AI Mock Interview Platform — Complete Brand Palette & Tokens
+   Psychology: 🌱 Growth (#3F7D58) · 🤝 Trust (#E6F4EA) · 🧠 AI Purple (#6366F1) · 💼 Professionalism
+   ============================================================================ */
+
+.font-heading {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.font-sans-ui {
+  font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  /* Background Tokens */
+  --bg-primary: #F8FBF8;
+  --bg-secondary: #F2F7F3;
+  --bg-surface: #FFFFFF;
+
+  /* Primary Brand (Growth & Trust Green) */
+  --color-primary: #3F7D58;
+  --color-primary-hover: #35694A;
+  --color-primary-light: #E6F4EA;
+
+  /* AI Tokens (Unified Forest Green) */
+  --color-ai: #3F7D58;
+  --color-ai-hover: #35694A;
+
+  /* Accent Blue & Status Tokens */
+  --color-accent-blue: #3B82F6;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+
+  /* Text & Border Tokens */
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-muted: #6B7280;
+  --text-disabled: #9CA3AF;
+  --border-color: #E5E7EB;
+  --border-hover: #D1D5DB;
+}
+
+/* Page & Section Backgrounds */
+.bg-brand-primary {
+  background-color: #F8FBF8;
+}
+
+.bg-brand-secondary {
+  background-color: #F2F7F3;
+}
+
+/* Card Surface & Glass Cards */
+.glass-card-white, .card-brand-surface {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+}
+
+.card-brand-surface:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.10);
+  border-color: #D1D5DB;
+}
+
+.dark .glass-card-white, .dark .card-brand-surface {
+  background: rgba(17, 24, 39, 0.92);
+  border-color: rgba(55, 65, 81, 0.6);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.4);
+}
+
+/* Primary Button Styles */
+.btn-brand-primary {
+  background: linear-gradient(135deg, #3F7D58 0%, #4E8D72 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(63, 125, 88, 0.25);
+  border-radius: 16px;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-brand-primary:hover {
+  background: linear-gradient(135deg, #35694A 0%, #3F7D58 100%);
+  box-shadow: 0 12px 24px rgba(53, 105, 74, 0.35);
+  transform: translateY(-1px);
+}
+
+/* AI Indicators & Glowing Orbs (Green-First) */
+.badge-ai {
+  background-color: #E6F4EA;
+  color: #3F7D58;
+  border: 1px solid #B1D3B9;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+@keyframes aiPulseGreen {
+  0% {
+    box-shadow: 0 0 0 0px rgba(63, 125, 88, 0.6);
   }
-
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+  70% {
+    box-shadow: 0 0 0 24px rgba(63, 125, 88, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0px rgba(63, 125, 88, 0);
   }
 }
 
-/* Gradient for CTA Section */
-.gradient {
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+.ai-pulse-ring-purple, .ai-pulse-ring {
+  animation: aiPulseGreen 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
 }
 
-/* Animation utilities */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+/* Brand Text Gradients */
+.brand-gradient-text, .ai-gradient-text {
+  background: linear-gradient(135deg, #111827 0%, #3F7D58 60%, #4E8D72 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+/* Primary Light Badges */
+.badge-primary-light {
+  background-color: #E6F4EA;
+  color: #3F7D58;
+  border: 1px solid #B1D3B9;
+  border-radius: 9999px;
+  font-weight: 600;
+  padding: 4px 12px;
 }
+
 

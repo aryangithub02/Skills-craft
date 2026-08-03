@@ -6,7 +6,15 @@ import fs from "fs";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(request) {
+    if (process.env.NODE_ENV === "production") {
+        const { searchParams } = new URL(request.url);
+        const secret = searchParams.get("secret");
+        if (!process.env.ADMIN_SECRET || secret !== process.env.ADMIN_SECRET) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+    }
+
     try {
         const filePath = path.join(process.cwd(), 'data/insights.json');
         const fileContent = fs.readFileSync(filePath, 'utf-8');
@@ -40,9 +48,7 @@ export async function GET() {
         console.error("Seeding error:", error);
         return NextResponse.json({
             success: false,
-            error: error.message,
-            cwd: process.cwd(),
-            pathAttempted: path.join(process.cwd(), 'data/insights.json')
-        }, { status: 200 });
+            error: "Failed to seed industry insights from manual file."
+        }, { status: 500 });
     }
 }

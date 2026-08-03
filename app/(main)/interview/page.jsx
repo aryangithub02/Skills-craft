@@ -1,19 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getUserAssessments, getUserAssessmentStats } from "@/actions/assessment";
 import { useSession } from "next-auth/react";
-import { Loader2, FileText, TrendingUp, Target, RotateCcw, Play } from "lucide-react";
+import { Loader2, FileText, TrendingUp, Target, RotateCcw, Play, Video, Sparkles } from "lucide-react";
+import AIVideoMockInterview from "@/components/interview/ai-video-mock-interview";
 
 export default function InterviewPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const loadingSession = status === "loading";
   
+  const [activeMode, setActiveMode] = useState("video"); // "video" | "overview"
   const [assessments, setAssessments] = useState([]);
   const [stats, setStats] = useState({ totalAssessments: 0, completedAssessments: 0, averageScore: 0 });
   const [loading, setLoading] = useState(true);
@@ -26,8 +28,6 @@ export default function InterviewPage() {
       if (session) {
         loadInterviewData();
       } else {
-        // Optional: Redirect or handle unauthenticated state?
-        // Since this page is likely protected by middleware, we might just stop loading
         setLoading(false);
       }
     }
@@ -36,15 +36,12 @@ export default function InterviewPage() {
   const loadInterviewData = async () => {
     try {
       setLoading(true);
-      
-      // Load assessments and stats in parallel
       const [assessmentsData, statsData] = await Promise.all([
         getUserAssessments(),
         getUserAssessmentStats()
       ]);
-      
-      setAssessments(assessmentsData);
-      setStats(statsData);
+      setAssessments(assessmentsData || []);
+      setStats(statsData || { totalAssessments: 0, completedAssessments: 0, averageScore: 0 });
     } catch (err) {
       console.error("Error loading interview data:", err);
       setError(err.message || "Failed to load interview data");
@@ -55,25 +52,64 @@ export default function InterviewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
         <div className="flex flex-col items-center">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="mt-4 text-lg text-muted-foreground">Loading interview data...</p>
+          <Loader2 className="h-10 w-10 animate-spin text-indigo-400" />
+          <p className="mt-4 text-sm text-slate-400">Initializing AI Interview Studio...</p>
         </div>
       </div>
     );
   }
 
+  // Render Live AI Video Interview Simulator if mode is "video"
+  if (activeMode === "video") {
+    return (
+      <div className="relative">
+        {/* Floating Top Mode Bar to Switch to Overview */}
+        <div className="fixed top-20 right-6 z-50">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setActiveMode("overview")}
+            className="bg-slate-900/90 border-slate-800 text-slate-300 hover:text-white backdrop-blur-xl shadow-xl rounded-xl text-xs flex items-center gap-2"
+          >
+            <FileText className="w-3.5 h-3.5 text-indigo-400" /> Past Session History
+          </Button>
+        </div>
+
+        <Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
+            <Loader2 className="h-10 w-10 animate-spin text-indigo-400" />
+          </div>
+        }>
+          <AIVideoMockInterview
+            userProfile={session?.user}
+            onCompleteSuccess={() => loadInterviewData()}
+          />
+        </Suspense>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-            Mock Interview System
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Practice for real interviews with AI-generated questions tailored to your industry and experience level
-          </p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-extrabold bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">
+              AI Mock Interview Hub
+            </h1>
+            <p className="text-sm text-slate-400 mt-1">
+              Practice for real interviews with AI-generated questions tailored to your industry and experience level
+            </p>
+          </div>
+
+          <Button
+            onClick={() => setActiveMode("video")}
+            className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white font-semibold rounded-xl px-5 py-2.5 text-xs shadow-xl shadow-indigo-950 flex items-center gap-2"
+          >
+            <Video className="w-4 h-4" /> Launch AI Video Simulator
+          </Button>
         </div>
 
         {/* Stats Cards */}

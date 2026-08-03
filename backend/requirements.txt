@@ -1,0 +1,27 @@
+# ============================================================
+# SkillsCraft Speech-to-Text Backend — Python Dependencies
+# ============================================================
+# Install with: pip install -r requirements.txt
+# ============================================================
+
+# ── Web Framework ────────────────────────────────────────────
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# ── Speech-to-Text (Faster-Whisper) ──────────────────────────
+# faster-whisper uses CTranslate2 under the hood for GPU/CPU inference.
+# On first run it downloads the model from Hugging Face Hub.
+faster-whisper>=1.1.1
+
+# ── Audio Processing ─────────────────────────────────────────
+# pydub is used as a fallback; faster-whisper does its own decoding
+# via ffmpeg (must be installed on the system).
+# We use ffmpeg-python wrappers for diagnostic commands.
+ffmpeg-python>=0.2.0
+
+# ── Utilities ────────────────────────────────────────────────
+python-dotenv>=1.0.0
+loguru>=0.7.2

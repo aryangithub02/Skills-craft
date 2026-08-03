@@ -1,6 +1,6 @@
 const { OpenAI } = require("openai");
 const { PrismaClient } = require("@prisma/client");
-require("dotenv").config({ path: ".env.local" });
+require("dotenv").config();
 
 async function verify() {
     console.log("🚀 Starting Verification Process...\n");
@@ -10,7 +10,7 @@ async function verify() {
 
     // 1. Verify OpenRouter
     console.log("🤖 Checking OpenRouter Connectivity...");
-    const apiKey = process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY || process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
         console.error("❌ API Key missing. Set GEMINI_API_KEY or OPENROUTER_API_KEY.");
@@ -22,7 +22,7 @@ async function verify() {
             });
 
             const response = await openai.chat.completions.create({
-                model: "google/gemini-2.0-flash-001",
+                model: "meta-llama/llama-3.3-70b-instruct",
                 messages: [{ role: "user", content: "Ping" }],
             });
 
@@ -37,10 +37,15 @@ async function verify() {
 
     // 2. Verify Database
     console.log("🗄️ Checking Database Connectivity...");
+    const { Pool } = require("pg");
+    const { PrismaPg } = require("@prisma/adapter-pg");
     let prisma;
+    let pool;
     try {
-        prisma = new PrismaClient();
-        await prisma.$connect();
+        const connectionString = process.env.DATABASE_URL;
+        pool = new Pool({ connectionString });
+        const adapter = new PrismaPg(pool);
+        prisma = new PrismaClient({ adapter });
         const count = await prisma.industryInsight.count();
         console.log(`✅ Database Connected! Found ${count} existing insights.`);
         dbSuccess = true;

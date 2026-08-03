@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Calendar } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -9,7 +10,7 @@ export default function IndustryHero({ industry, insights }) {
                 <div className="max-w-4xl mx-auto">
                     {/* Breadcrumb */}
                     <div className="text-sm text-muted-foreground mb-4">
-                        <a href="/industry" className="hover:text-primary">Industries</a>
+                        <Link href="/industry" className="hover:text-primary">Industries</Link>
                         <span className="mx-2">/</span>
                         <span>{industry.name}</span>
                     </div>

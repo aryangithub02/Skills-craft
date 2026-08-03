@@ -56,22 +56,18 @@ export async function saveResume(content, resumeData) {
 export async function getResume() {
     const session = await auth();
 
-    console.log("getResume: Checking auth...");
     if (!session?.user) {
-        console.log("getResume: No user found");
         throw new Error("Unauthorized");
     }
     const userId = session.user.id;
-    console.log("getResume: userId found:", userId);
 
     let user;
     try {
         user = await db.user.findUnique({
             where: { id: userId },
         });
-        console.log("getResume: User found in DB:", user ? user.id : "null");
     } catch (e) {
-        console.error("getResume: Error finding user:", e);
+        console.error("getResume: Error finding user");
         throw e;
     }
 

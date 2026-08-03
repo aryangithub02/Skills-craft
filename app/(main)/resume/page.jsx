@@ -1,12 +1,15 @@
 import { getResume } from "@/actions/resume";
-import ResumeBuilder from "./_components/ResumeBuilder";
+import ResumeClientView from "./_components/ResumeClientView";
 
 export default async function ResumePage() {
   const resume = await getResume();
 
   return (
-    <div className="container mx-auto py-6 px-4">
-      <ResumeBuilder initialContent={resume?.content} initialData={resume?.resumeData} />
+    <div className="max-w-[1400px] mx-auto py-8 px-4 sm:px-8">
+      <ResumeClientView 
+        initialContent={resume?.content} 
+        initialData={resume?.resumeData} 
+      />
     </div>
   );
 }

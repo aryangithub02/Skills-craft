@@ -21,7 +21,11 @@ export default function CoverLetterPreview({ content, className }) {
         iframe.style.border = 'none';
         document.body.appendChild(iframe);
 
-        const pdfContent = element.innerHTML;
+        const pdfContent = element.innerHTML
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+            .replace(/on\w+="[^"]*"/gi, "")
+            .replace(/on\w+='[^']*'/gi, "")
+            .replace(/javascript:/gi, "");
         const doc = iframe.contentWindow.document;
 
         doc.open();

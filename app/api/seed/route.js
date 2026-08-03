@@ -4,7 +4,15 @@ import { NextResponse } from "next/server";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET() {
+export async function GET(request) {
+    if (process.env.NODE_ENV === "production") {
+        const { searchParams } = new URL(request.url);
+        const secret = searchParams.get("secret");
+        if (!process.env.ADMIN_SECRET || secret !== process.env.ADMIN_SECRET) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+    }
+
     try {
         // 1. Create an Industry Insight (related data)
         await db.industryInsight.upsert({

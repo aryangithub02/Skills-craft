@@ -1,0 +1,32 @@
+# Python virtual environment
+venv/
+.venv/
+env/
+
+# Environment files (keep .env.example, ignore .env)
+.env
+*.env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Whisper model cache (downloaded models)
+~/.cache/whisper/
+model_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
