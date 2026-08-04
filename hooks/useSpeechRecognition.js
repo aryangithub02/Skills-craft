@@ -44,6 +44,26 @@ function supportsMediaRecorder() {
 }
 
 /**
+ * Clean & deduplicate repeated n-grams and stutters from speech recognition
+ * e.g., "if he is if he is if he is lacking in" -> "if he is lacking in"
+ */
+function cleanSpeechTranscript(text) {
+  if (!text || typeof text !== "string") return "";
+  let cleaned = text.replace(/\s+/g, " ").trim();
+  if (!cleaned) return "";
+
+  // 1. Remove consecutive identical words: "the the" -> "the"
+  cleaned = cleaned.replace(/\b(\w+)(?:\s+\1\b)+/gi, "$1");
+
+  // 2. Remove consecutive repeating phrases (2-6 words)
+  for (let pass = 0; pass < 3; pass++) {
+    cleaned = cleaned.replace(/\b(.{3,50}?)\s+\1\b/gi, "$1");
+  }
+
+  return cleaned.trim();
+}
+
+/**
  * useSpeechRecognition
  *
  * Cross-platform speech-to-text hook with intelligent mode selection:
@@ -332,23 +352,28 @@ export function useSpeechRecognition({
 
       for (let i = 0; i < event.results.length; i++) {
         const result = event.results[i];
+        const textSegment = result[0]?.transcript?.trim() || "";
+        if (!textSegment) continue;
+
         if (result.isFinal) {
-          finalText += result[0].transcript;
+          finalText += (finalText ? " " : "") + textSegment;
         } else {
-          interimText += result[0].transcript;
+          interimText += (interimText ? " " : "") + textSegment;
         }
       }
 
       LOG("SR:onresult", `final="${finalText.slice(0, 60)}" interim="${interimText.slice(0, 60)}"`);
 
       if (finalText) {
-        srTranscriptRef.current += (srTranscriptRef.current ? " " : "") + finalText;
-        setTranscriptAndNotify(srTranscriptRef.current);
+        const cleanedFinal = cleanSpeechTranscript(finalText);
+        srTranscriptRef.current = cleanedFinal;
+        setTranscriptAndNotify(cleanedFinal);
       }
 
       if (interimText) {
-        srInterimRef.current = interimText;
-        setInterimTranscript(interimText);
+        const cleanedInterim = cleanSpeechTranscript(interimText);
+        srInterimRef.current = cleanedInterim;
+        setInterimTranscript(cleanedInterim);
       }
 
       updateDebug({ currentEvent: "onresult", audioActive: true });
@@ -757,7 +782,8 @@ export function useSpeechRecognition({
    */
   const transcribe = useCallback(async (stopRecorderIfNeeded = true) => {
     LOG("TRANSCRIBE", "Direct live voice detection — returning accumulated transcript");
-    const text = (srTranscriptRef.current || transcript || "").trim();
+    const rawText = (srTranscriptRef.current || transcript || "").trim();
+    const text = cleanSpeechTranscript(rawText);
     if (stopRecorderIfNeeded) stop();
     if (text) setTranscriptAndNotify(text);
     return text;
