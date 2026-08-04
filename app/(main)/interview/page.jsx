@@ -8,7 +8,22 @@ import { Badge } from "@/components/ui/badge";
 import { getUserAssessments, getUserAssessmentStats } from "@/actions/assessment";
 import { useSession } from "next-auth/react";
 import { Loader2, FileText, TrendingUp, Target, RotateCcw, Play, Video, Sparkles } from "lucide-react";
-import AIVideoMockInterview from "@/components/interview/ai-video-mock-interview";
+import dynamic from "next/dynamic";
+
+const AIVideoMockInterview = dynamic(
+  () => import("@/components/interview/ai-video-mock-interview"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
+        <div className="flex flex-col items-center">
+          <Loader2 className="h-10 w-10 animate-spin text-indigo-400" />
+          <p className="mt-4 text-sm text-slate-400">Loading AI Video Mock Studio...</p>
+        </div>
+      </div>
+    )
+  }
+);
 
 export default function InterviewPage() {
   const router = useRouter();
