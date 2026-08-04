@@ -14,7 +14,6 @@ import { updateCoverLetter } from "@/actions/cover-letter";
 import { generateCoverLetter } from "@/actions/generate-cover-letter"; // We need this action
 import { toast } from "sonner";
 import Link from "next/link";
-import MDEditor from "@uiw/react-md-editor";
 import CoverLetterPreview from "./CoverLetterPreview";
 
 const formSchema = z.object({
