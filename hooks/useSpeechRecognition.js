@@ -248,7 +248,7 @@ export function useSpeechRecognition({
     } catch (e) {
       WARN("ANALYSIS", "AudioContext setup skipped:", e.message);
     }
-  }, []); c
+  }, []);
 
   const stopAudioAnalysis = useCallback(() => {
     if (animationFrameRef.current) {
