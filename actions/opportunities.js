@@ -32,24 +32,25 @@ export async function syncLiveOpportunities() {
       });
       if (heRes.ok) {
         const heData = await heRes.json();
-        const challenges = heData?.data || (Array.isArray(heData) ? heData : []);
+        const challenges = Array.isArray(heData?.data) ? heData.data : (Array.isArray(heData) ? heData : []);
         for (const c of challenges) {
-          if (!c.title || !c.url) continue;
-          const externalId = `he-${c.id || c.title.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`;
-          const isHack = c.challenge_type === "HACKATHON" || String(c.title).toLowerCase().includes("hackathon");
+          if (!c || typeof c !== "object" || !c.title || !c.url) continue;
+          const titleStr = String(c.title);
+          const externalId = `he-${c.id || titleStr.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`;
+          const isHack = c.challenge_type === "HACKATHON" || titleStr.toLowerCase().includes("hackathon");
 
           syncedItems.push({
             externalId,
             type: isHack ? "hackathon" : "contest",
-            title: c.title,
+            title: titleStr,
             organization: c.company || "HackerEarth",
             logoUrl: c.thumbnail || null,
             location: "Online",
             isRemote: true,
             isPaid: true,
             prizePool: "Cash Prizes & Job Interviews",
-            url: c.url,
-            description: `Official HackerEarth ${isHack ? 'Hackathon' : 'Coding Challenge'}: ${c.title}.`,
+            url: String(c.url),
+            description: `Official HackerEarth ${isHack ? 'Hackathon' : 'Coding Challenge'}: ${titleStr}.`,
             tags: ["HackerEarth", "Competitive Programming", "Algorithms", "Hackathon"],
             platform: "HackerEarth",
             industry: "Technology",
@@ -75,6 +76,7 @@ export async function syncLiveOpportunities() {
         if (cfData.status === "OK" && Array.isArray(cfData.result)) {
           const activeCF = cfData.result.slice(0, 25);
           for (const c of activeCF) {
+            if (!c || typeof c !== "object" || !c.name || !c.id) continue;
             const externalId = `cf-${c.id}`;
             const startDate = c.startTimeSeconds ? new Date(c.startTimeSeconds * 1000) : new Date(Date.now() + 86400000);
             const durationSecs = c.durationSeconds || 7200;
@@ -83,7 +85,7 @@ export async function syncLiveOpportunities() {
             syncedItems.push({
               externalId,
               type: "contest",
-              title: c.name,
+              title: String(c.name),
               organization: "Codeforces",
               logoUrl: "https://codeforces.org/s/0/favicon.ico",
               location: "Online",
@@ -116,8 +118,9 @@ export async function syncLiveOpportunities() {
       if (contestRes.ok) {
         const contests = await contestRes.json();
         for (const c of (Array.isArray(contests) ? contests : [])) {
-          if (!c.name || !c.url) continue;
-          const externalId = `kontest-${(c.site || 'pub').toLowerCase()}-${c.name.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`;
+          if (!c || typeof c !== "object" || !c.name || !c.url) continue;
+          const nameStr = String(c.name);
+          const externalId = `kontest-${(c.site || 'pub').toLowerCase()}-${nameStr.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`;
           const startDate = c.start_time ? new Date(c.start_time) : new Date();
           const durationSecs = c.duration ? parseInt(c.duration, 10) : 7200;
           const endDate = new Date(startDate.getTime() + (isNaN(durationSecs) ? 7200 : durationSecs) * 1000);
@@ -125,17 +128,17 @@ export async function syncLiveOpportunities() {
           syncedItems.push({
             externalId,
             type: "contest",
-            title: c.name,
-            organization: c.site || "Coding Platform",
+            title: nameStr,
+            organization: String(c.site || "Coding Platform"),
             logoUrl: null,
             location: "Online",
             isRemote: true,
             isPaid: true,
             prizePool: "Rating Points & Prizes",
-            url: c.url,
-            description: `Participate in ${c.name} on ${c.site || 'online platform'}.`,
-            tags: [c.site || "Coding", "Algorithms", "Problem Solving"],
-            platform: c.site || "Online Contest",
+            url: String(c.url),
+            description: `Participate in ${nameStr} on ${c.site || 'online platform'}.`,
+            tags: [String(c.site || "Coding"), "Algorithms", "Problem Solving"],
+            platform: String(c.site || "Online Contest"),
             industry: "Technology",
             experienceLevel: "All",
             deadline: endDate > now ? endDate : new Date(Date.now() + 30 * 86400000),
