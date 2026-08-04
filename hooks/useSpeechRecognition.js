@@ -752,106 +752,16 @@ export function useSpeechRecognition({
   /**
    * transcribe – get the final transcript.
    *
-   * - In browser-SR mode: returns the accumulated transcript immediately
-   * - In MediaRecorder mode: stops recording, sends audio to FastAPI
-   *
    * @param {boolean} stopRecorderIfNeeded - Whether to stop the recorder first. Default true.
    * @returns {Promise<string>} Transcribed text
    */
   const transcribe = useCallback(async (stopRecorderIfNeeded = true) => {
-    // ── Browser SR mode: return accumulated transcript ──────────────────
-    if (currentModeRef.current === "browser-sr") {
-      LOG("TRANSCRIBE", "Browser SR mode — returning accumulated transcript");
-      const text = srTranscriptRef.current.trim();
-      if (stopRecorderIfNeeded) stop();
-      if (text) setTranscriptAndNotify(text);
-      return text;
-    }
-
-    // ── MediaRecorder mode: send to FastAPI ─────────────────────────────
-    const recorder = mediaRecorderRef.current;
-
-    if (stopRecorderIfNeeded && recorder && recorder.state !== "inactive") {
-      LOG("TRANSCRIBE", "Stopping recorder before final transcription...");
-      isActiveRef.current = false;
-      clearInterval(progressiveTimerRef.current);
-      progressiveTimerRef.current = null;
-      clearSilenceTimer();
-
-      await new Promise((resolve) => {
-        const orig = recorder.onstop;
-        recorder.onstop = (event) => {
-          if (typeof orig === "function") orig.call(recorder, event);
-          resolve();
-        };
-        recorder.stop();
-      });
-      stopRecordingTimer();
-      stopAudioAnalysis();
-      LOG("TRANSCRIBE", "Recorder fully stopped");
-    } else if (recorder && recorder.state === "inactive" && audioChunksRef.current.length > 0) {
-      await new Promise((r) => setTimeout(r, 50));
-    }
-
-    const chunks = audioChunksRef.current;
-    if (!chunks || chunks.length === 0) {
-      LOG("TRANSCRIBE", "No audio data to transcribe");
-      return "";
-    }
-
-    setIsTranscribing(true);
-    setError(null);
-
-    try {
-      const mimeType = recorder?.mimeType || "audio/webm";
-      const blob = new Blob(chunks, { type: mimeType });
-      const localAudioUrl = URL.createObjectURL(blob);
-      setAudioUrl(localAudioUrl);
-      setLastAudioBlob(blob);
-      LOG("RECORD_VOICE", `Saved voice recording: ${(blob.size / 1024).toFixed(1)} KB`);
-
-      audioChunksRef.current = [];
-
-      const form = new FormData();
-      form.append("audio", blob, `voice-${Date.now()}.webm`);
-
-      let serverAudioUrl = localAudioUrl;
-      let finalTranscribedText = srTranscriptRef.current.trim() || transcript.trim();
-
-      try {
-        const res = await fetch(transcribeUrl(), {
-          method: "POST",
-          body: form,
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.audio_url) {
-            serverAudioUrl = data.audio_url;
-            setAudioUrl(serverAudioUrl);
-          }
-          if (data.transcript && data.transcript.trim()) {
-            finalTranscribedText = data.transcript.trim();
-          }
-        }
-      } catch (err) {
-        WARN("VOICE_SAVE", "Backend save warning:", err.message);
-      }
-
-      if (finalTranscribedText) {
-        setTranscriptAndNotify(finalTranscribedText);
-      }
-      return finalTranscribedText;
-    } catch (err) {
-      ERR("TRANSCRIBE", "Voice recording save failed:", err);
-      setError(err.message || "recording-failed");
-      return srTranscriptRef.current.trim() || transcript.trim();
-    } finally {
-      setIsTranscribing(false);
-      releaseMediaStream();
-      setRecognitionMode("idle");
-      currentModeRef.current = "idle";
-    }
-  }, [stop, stopRecordingTimer, stopAudioAnalysis, setTranscriptAndNotify, releaseMediaStream, clearSilenceTimer, transcript]);
+    LOG("TRANSCRIBE", "Direct live voice detection — returning accumulated transcript");
+    const text = (srTranscriptRef.current || transcript || "").trim();
+    if (stopRecorderIfNeeded) stop();
+    if (text) setTranscriptAndNotify(text);
+    return text;
+  }, [transcript, stop, setTranscriptAndNotify]);
 
   return {
     transcript,

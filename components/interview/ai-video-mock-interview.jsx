@@ -1036,22 +1036,16 @@ export default function AIVideoMockInterview({ userProfile, onCompleteSuccess })
     tts.cancel();
     stt.stop();
 
-    let finalAnswer = candidateSpeech.trim();
-    toast.info("Transcribing candidate speech...");
     const voiceResult = await stt.transcribe();
-    if (voiceResult) {
-      finalAnswer = voiceResult;
-      setCandidateSpeech(voiceResult);
-    }
-
-    const answerText = finalAnswer || candidateSpeech || "No verbal response provided.";
+    const answerText = (voiceResult || candidateSpeech || stt.transcript || "").trim() || "No verbal response provided.";
+    
     const updatedAnswers = {
       ...userAnswers,
       [currentIndex]: answerText,
     };
     setUserAnswers(updatedAnswers);
 
-    toast.success(`Speech answer saved for Question ${currentIndex + 1}!`);
+    toast.success(`Voice answer captured for Question ${currentIndex + 1}!`);
 
     // Save turn to transcript history
     setTranscriptHistory((prev) => [
@@ -1095,13 +1089,13 @@ export default function AIVideoMockInterview({ userProfile, onCompleteSuccess })
     tts.cancel();
     stt.stop();
 
-    let answersToSubmit = { ...finalAnswers };
-    toast.info("Saving your final recorded voice response...");
     const voiceResult = await stt.transcribe();
-    if (voiceResult) {
-      answersToSubmit[currentIndex] = voiceResult;
-      setCandidateSpeech(voiceResult);
-    }
+    const currentAnswer = (voiceResult || candidateSpeech || stt.transcript || "").trim() || "No verbal response provided.";
+
+    const answersToSubmit = { 
+      ...finalAnswers,
+      [currentIndex]: currentAnswer,
+    };
 
     setStep("dashboard");
     setIsEvaluating(true);
