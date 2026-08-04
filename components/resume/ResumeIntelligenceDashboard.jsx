@@ -21,6 +21,7 @@ import {
   ChevronRight, 
   Flame, 
   DollarSign, 
+  IndianRupee,
   RefreshCw, 
   X,
   Upload,
@@ -418,7 +419,7 @@ export default function ResumeIntelligenceDashboard({ initialContent, initialDat
             { id: "overview", label: "📊 Overview & ATS Score", badge: `${analysisData.atsScore}%` },
             { id: "keywords", label: "🔍 Keywords & Density", badge: `${analysisData.keywordAnalysis.found.length} Found` },
             { id: "recruiter", label: "🧠 Recruiter & AI Detector", badge: `${analysisData.aiDetection.humanPercent}% Human` },
-            { id: "roadmap", label: "🗺️ Interactive Skill Roadmap", badge: "Roadmap 🔥" },
+            { id: "roadmap", label: "🗺️ Missing Skills Roadmap & ₹ Salary", badge: `${analysisData.skillRoadmap?.length || 0} Gaps` },
             { id: "heatmap", label: "⚡ Heatmap & AI Recommendations", badge: "Action Plan" },
           ].map((tab) => (
             <button
@@ -707,83 +708,86 @@ export default function ResumeIntelligenceDashboard({ initialContent, initialDat
         </div>
       )}
 
-      {/* ── TAB 4: INTERACTIVE SKILL ROADMAP & SALARY (KILLER FEATURE!) ── */}
+      {/* ── TAB 4: MISSING SKILLS ROADMAP & SALARY PREDICTION (INR / RS) ── */}
       {!isAnalyzing && analysisData && activeTab === "roadmap" && (
         <div className="space-y-8">
           
-          {/* Salary Prediction Banner */}
+          {/* Salary Prediction Banner (Rupees ₹ & LPA) */}
           <div className="neo-surface p-6 sm:p-8 rounded-3xl border border-indigo-500/30 shadow-md bg-gradient-to-r from-indigo-900 via-slate-900 to-purple-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-black text-amber-400 uppercase tracking-widest mb-1">
-                <DollarSign className="w-4 h-4" /> AI Salary Prediction Model
+                <IndianRupee className="w-4 h-4 text-amber-400" /> AI Salary Prediction Model (INR)
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black">Target Salary Potential</h3>
-              <p className="text-xs sm:text-sm text-slate-300 font-medium">Estimated compensation increase after completing the skill roadmap.</p>
+              <h3 className="text-2xl sm:text-3xl font-black">Target Salary Potential (₹ Rupees / LPA)</h3>
+              <p className="text-xs sm:text-sm text-slate-300 font-medium">Estimated Indian compensation (LPA) increase after completing missing skills roadmap.</p>
             </div>
 
             <div className="flex items-center gap-6 flex-wrap">
               <div>
                 <span className="text-[10px] text-slate-400 uppercase font-bold block">Current Resume</span>
-                <span className="text-lg font-black font-mono text-slate-200">{analysisData?.salaryPrediction?.currentExpected || "$95,000 – $120,000"}</span>
+                <span className="text-lg font-black font-mono text-slate-200">{analysisData?.salaryPrediction?.currentExpected || "₹8,50,000 – ₹12,00,000 (8.5 – 12 LPA)"}</span>
               </div>
               <ArrowRight className="w-5 h-5 text-indigo-400" />
               <div>
                 <span className="text-[10px] text-emerald-400 uppercase font-bold block">Post-Roadmap Target</span>
-                <span className="text-xl sm:text-2xl font-black font-mono text-emerald-400">{analysisData?.salaryPrediction?.postRoadmapExpected || "$140,000 – $175,000"}</span>
+                <span className="text-xl sm:text-2xl font-black font-mono text-emerald-400">{analysisData?.salaryPrediction?.postRoadmapExpected || "₹16,00,000 – ₹22,00,000 (16 – 22 LPA)"}</span>
               </div>
               <Badge className="bg-emerald-500 text-white font-black text-xs px-3.5 py-1">
-                {analysisData?.salaryPrediction?.potentialIncreasePercent || "+42% Boost"}
+                {analysisData?.salaryPrediction?.potentialIncreasePercent || "+48% Boost"}
               </Badge>
             </div>
           </div>
 
-          {/* Interactive Skill Roadmap Node Graph */}
+          {/* Missing Skills Roadmap Node Graph */}
           <div className="neo-surface p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6 bg-white dark:bg-[#13141f]">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                  <Flame className="w-5 h-5 text-indigo-500" /> Interactive Skill Progression Roadmap
+                  <Flame className="w-5 h-5 text-rose-500" /> Missing Skills Gap Roadmap ({analysisData?.skillRoadmap?.length || 0} Missing)
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">Click any skill node below to view curated learning resources, target projects, and interview questions.</p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+                  Roadmap focused strictly on missing skills required for {targetRole}. Click any skill node to access curated learning resources, documentation, and interview questions.
+                </p>
               </div>
             </div>
 
-            {/* Sequential Nodes List */}
+            {/* Missing Skill Nodes List */}
             <div className="relative pt-4 pb-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
-                {(analysisData?.skillRoadmap || []).map((node, idx) => {
-                  const isCompleted = node.status === "completed";
-                  return (
+              {(!analysisData?.skillRoadmap || analysisData.skillRoadmap.length === 0) ? (
+                <div className="p-8 text-center bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 space-y-2">
+                  <Check className="w-8 h-8 text-emerald-500 mx-auto" />
+                  <h4 className="font-extrabold text-lg">No Critical Missing Skill Gaps Found!</h4>
+                  <p className="text-xs font-medium">Your resume satisfies all key technical keywords required for {targetRole}.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
+                  {analysisData.skillRoadmap.map((node, idx) => (
                     <motion.div
-                      key={node.id}
+                      key={node.id || idx}
                       whileHover={{ scale: 1.02, y: -2 }}
                       onClick={() => setSelectedRoadmapNode(node)}
-                      className={`p-5 rounded-3xl border cursor-pointer transition-all duration-200 relative shadow-sm ${
-                        isCompleted
-                          ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-950 dark:text-emerald-100"
-                          : "bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100"
-                      }`}
+                      className="p-5 rounded-3xl border cursor-pointer transition-all duration-200 relative shadow-sm bg-rose-50/40 dark:bg-rose-950/20 border-rose-200/80 dark:border-rose-900/60 text-slate-900 dark:text-slate-100 hover:border-rose-500"
                     >
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400">
-                          Step {idx + 1}
+                        <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">
+                          Gap {idx + 1}
                         </span>
-                        <Badge className={isCompleted ? "bg-emerald-500 text-white font-extrabold" : "bg-indigo-600 text-white font-extrabold"}>
-                          {node.status}
+                        <Badge className="bg-rose-600 text-white font-extrabold text-[10px]">
+                          Action Required
                         </Badge>
                       </div>
 
-                      <h4 className="text-base font-black mb-1">{node.name}</h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{node.category} • {node.estimatedTime}</p>
+                      <h4 className="text-base font-black mb-1 text-slate-900 dark:text-slate-100">{node.name}</h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{node.category} • {node.estimatedTime || "1 Week"}</p>
 
-                      <div className="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs font-extrabold text-indigo-600 dark:text-indigo-400">
-                        <span>View Resources</span>
+                      <div className="mt-4 pt-3 border-t border-rose-200/60 dark:border-rose-900/40 flex items-center justify-between text-xs font-extrabold text-rose-600 dark:text-rose-400">
+                        <span>View Learning Resources</span>
                         <ChevronRight className="w-4 h-4" />
                       </div>
                     </motion.div>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -793,7 +797,7 @@ export default function ResumeIntelligenceDashboard({ initialContent, initialDat
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white dark:bg-[#13141f] rounded-3xl p-8 w-full max-w-2xl space-y-6 relative border border-slate-200 dark:border-slate-800 shadow-2xl">
                 <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                   <div>
-                    <Badge className="bg-indigo-600 text-white text-xs font-black uppercase mb-1">
+                    <Badge className="bg-rose-600 text-white text-xs font-black uppercase mb-1">
                       {selectedRoadmapNode.category} • {selectedRoadmapNode.difficulty}
                     </Badge>
                     <h3 className="text-2xl font-black text-slate-900 dark:text-slate-100">{selectedRoadmapNode.name}</h3>
@@ -806,20 +810,33 @@ export default function ResumeIntelligenceDashboard({ initialContent, initialDat
                 <div className="space-y-4 text-xs sm:text-sm">
                   <div className="space-y-2">
                     <span className="font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-wider block flex items-center gap-1.5">
-                      <BookOpen className="w-4 h-4 text-indigo-500" /> Curated Learning Resources &amp; Documentation
+                      <BookOpen className="w-4 h-4 text-indigo-500" /> Official Documentation &amp; Learning Resources
                     </span>
-                    <ul className="space-y-1 pl-4 list-disc text-slate-600 dark:text-slate-300 font-medium">
+                    <ul className="space-y-1.5 pl-4 list-disc text-slate-700 dark:text-slate-300 font-medium">
                       {selectedRoadmapNode.learningResources?.map((res, i) => (
-                        <li key={i}>{res}</li>
+                        <li key={i} className="leading-relaxed">{res}</li>
                       ))}
                     </ul>
                   </div>
 
+                  {selectedRoadmapNode.topCourses && selectedRoadmapNode.topCourses.length > 0 && (
+                    <div className="space-y-2">
+                      <span className="font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-wider block flex items-center gap-1.5">
+                        <Award className="w-4 h-4 text-amber-500" /> Top Recommended Courses &amp; Certifications
+                      </span>
+                      <ul className="space-y-1.5 pl-4 list-disc text-slate-700 dark:text-slate-300 font-medium">
+                        {selectedRoadmapNode.topCourses?.map((course, i) => (
+                          <li key={i}>{course}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
                   <div className="space-y-2">
                     <span className="font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-wider block flex items-center gap-1.5">
-                      <Award className="w-4 h-4 text-purple-500" /> Recommended Portfolio Project
+                      <Target className="w-4 h-4 text-purple-500" /> Recommended Portfolio Project
                     </span>
-                    <ul className="space-y-1 pl-4 list-disc text-slate-600 dark:text-slate-300 font-medium">
+                    <ul className="space-y-1.5 pl-4 list-disc text-slate-700 dark:text-slate-300 font-medium">
                       {selectedRoadmapNode.targetProjects?.map((proj, i) => (
                         <li key={i}>{proj}</li>
                       ))}
@@ -828,9 +845,9 @@ export default function ResumeIntelligenceDashboard({ initialContent, initialDat
 
                   <div className="space-y-2">
                     <span className="font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-wider block flex items-center gap-1.5">
-                      <Brain className="w-4 h-4 text-emerald-500" /> Top Interview Technical Questions
+                      <Brain className="w-4 h-4 text-emerald-500" /> Top Technical Interview Questions
                     </span>
-                    <ul className="space-y-1 pl-4 list-disc text-slate-600 dark:text-slate-300 font-medium">
+                    <ul className="space-y-1.5 pl-4 list-disc text-slate-700 dark:text-slate-300 font-medium">
                       {selectedRoadmapNode.interviewQuestions?.map((q, i) => (
                         <li key={i}>&ldquo;{q}&rdquo;</li>
                       ))}

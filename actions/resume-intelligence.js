@@ -62,9 +62,181 @@ const KEYWORD_PATTERNS = {
 };
 
 /**
- * Deterministic Post-Processor Guarantee: Ensures 100% accurate keyword extraction
+ * Comprehensive learning resources and project templates for missing tech skills
  */
-function applyDeterministicKeywordGuarantee(data, rawResumeText) {
+const SKILL_RESOURCE_MAP = {
+  "Docker": {
+    name: "Docker & Containerization",
+    category: "DevOps",
+    difficulty: "Intermediate",
+    estimatedTime: "1 - 2 Weeks",
+    learningResources: [
+      "Docker Official Get Started Guide (docs.docker.com/get-started)",
+      "FreeCodeCamp Docker for Beginners Course (freecodecamp.org)",
+      "Docker Curriculum Interactive Tutorials (dockercurriculum.com)"
+    ],
+    targetProjects: ["Containerize Node.js REST API & Deploy with Docker Compose"],
+    topCourses: ["Docker Mastery: with Kubernetes & Swarm (Udemy)", "Docker for Web Developers (Frontend Masters)"],
+    interviewQuestions: ["What is the difference between a Docker image and a container?", "How do multi-stage Docker builds optimize image size?"]
+  },
+  "Next.js": {
+    name: "Next.js 15 & App Router Architecture",
+    category: "Frontend / Full Stack",
+    difficulty: "Intermediate",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "Next.js Official Interactive Learn Course (nextjs.org/learn)",
+      "Vercel Next.js App Router Architecture Guide",
+      "React Server Components Deep Dive (react.dev)"
+    ],
+    targetProjects: ["Build Full-Stack Next.js 15 E-Commerce with Server Actions & SSR"],
+    topCourses: ["Next.js 15 & React - The Complete Guide (Udemy)", "Frontend Masters Next.js Deep Dive"],
+    interviewQuestions: ["What is the difference between Server Components and Client Components?", "How do Server Actions work in Next.js?"]
+  },
+  "AWS": {
+    name: "AWS Cloud Infrastructure (EC2, S3, ECS)",
+    category: "Cloud Architecture",
+    difficulty: "Advanced",
+    estimatedTime: "2 Weeks",
+    learningResources: [
+      "AWS Skill Builder Official Learning Paths (skillbuilder.aws)",
+      "AWS Free Tier Hands-On Workshops (aws.amazon.com/getting-started)",
+      "AWS Architecture Center Best Practices"
+    ],
+    targetProjects: ["Deploy Scalable Microservices on AWS ECS with S3 & CloudFront CDN"],
+    topCourses: ["AWS Certified Solutions Architect Associate (Stephane Maarek - Udemy)", "AWS Cloud Practitioner Masterclass"],
+    interviewQuestions: ["Explain the difference between AWS IAM Roles and IAM Policies.", "How do S3 bucket policies and CloudFront CDN work together?"]
+  },
+  "CI/CD": {
+    name: "CI/CD Pipeline Automation",
+    category: "DevOps",
+    difficulty: "Intermediate",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "GitHub Actions Official Documentation (docs.github.com/actions)",
+      "GitLab CI/CD Pipelines Guide (docs.gitlab.com)",
+      "Automated Testing in CI Pipelines"
+    ],
+    targetProjects: ["Automate Testing & Deployment Pipelines to AWS/Vercel with GitHub Actions"],
+    topCourses: ["GitHub Actions: The Complete Guide (Udemy)", "DevOps CI/CD Pipeline Fundamentals"],
+    interviewQuestions: ["What is the difference between Continuous Integration and Continuous Deployment?", "How do you securely manage secrets in CI/CD pipelines?"]
+  },
+  "Redis": {
+    name: "Redis In-Memory Caching & Rate Limiting",
+    category: "Database / Performance",
+    difficulty: "Advanced",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "Redis Official University Free Courses (university.redis.io)",
+      "Redis Developer Documentation (redis.io/docs)",
+      "Node.js Redis Caching Patterns Guide"
+    ],
+    targetProjects: ["Implement High-Speed Redis Caching Layer & API Rate Limiter"],
+    topCourses: ["Redis University: RU101 Introduction to Redis", "Node.js & Redis High-Performance Caching"],
+    interviewQuestions: ["How do you prevent Cache Stampede and Cache Invalidation issues?", "What is the difference between Redis RDB snapshots and AOF persistence?"]
+  },
+  "TypeScript": {
+    name: "TypeScript & Type Safety",
+    category: "Languages",
+    difficulty: "Intermediate",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "TypeScript Official Handbook (typescriptlang.org/docs)",
+      "Execute Program Interactive TypeScript Lessons",
+      "Total TypeScript Core Concepts"
+    ],
+    targetProjects: ["Refactor JavaScript Application to Strict TypeScript with Zod Validation"],
+    topCourses: ["Understanding TypeScript (Udemy)", "Total TypeScript by Matt Pocock"],
+    interviewQuestions: ["What is the difference between interface and type in TypeScript?", "How do Generics and Utility Types work?"]
+  },
+  "Python": {
+    name: "Python Backend & Async APIs",
+    category: "Backend",
+    difficulty: "Intermediate",
+    estimatedTime: "2 Weeks",
+    learningResources: [
+      "Python Official Documentation & Tutorials (python.org)",
+      "Real Python In-Depth Tutorials (realpython.com)",
+      "FastAPI Official Documentation (fastapi.tiangolo.com)"
+    ],
+    targetProjects: ["Build FastAPI Microservice with Async PostgreSQL & Pydantic Validation"],
+    topCourses: ["100 Days of Code: Complete Python Pro Bootcamp", "Core Python & FastAPI Masterclass"],
+    interviewQuestions: ["What is the Global Interpreter Lock (GIL) in Python?", "How do decorators and generators work?"]
+  },
+  "Java": {
+    name: "Java & Spring Boot Architecture",
+    category: "Enterprise Backend",
+    difficulty: "Intermediate",
+    estimatedTime: "2 Weeks",
+    learningResources: [
+      "Baeldung Java & Spring Boot Guides (baeldung.com)",
+      "Oracle Official Java Documentation (docs.oracle.com)",
+      "Spring Framework Official Tutorials (spring.io/guides)"
+    ],
+    targetProjects: ["Develop Enterprise Spring Boot Microservice with JPA/Hibernate ORM"],
+    topCourses: ["Java Programming Masterclass (Udemy)", "Spring Boot 3 & Spring Framework 6"],
+    interviewQuestions: ["How does Java Garbage Collection work?", "What is Dependency Injection in Spring Boot?"]
+  },
+  "MongoDB": {
+    name: "MongoDB & NoSQL Data Modeling",
+    category: "Database",
+    difficulty: "Intermediate",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "MongoDB University Free Courses (learn.mongodb.com)",
+      "MongoDB Developer Center Documentation",
+      "Mongoose ODM Guide"
+    ],
+    targetProjects: ["Build Multi-tenant SaaS Database Schema with Mongoose Aggregations"],
+    topCourses: ["MongoDB - The Complete Developer's Guide (Udemy)", "MongoDB Node.js Path"],
+    interviewQuestions: ["What are compound indexes in MongoDB and how do they optimize queries?", "Explain MongoDB Aggregation Framework pipelines."]
+  },
+  "MySQL": {
+    name: "Relational Database & SQL Optimization",
+    category: "Database",
+    difficulty: "Intermediate",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "Use The Index, Luke! Database Performance Guide",
+      "MySQL Official Documentation & Query Tuning",
+      "SQLBolt Interactive SQL Lessons (sqlbolt.com)"
+    ],
+    targetProjects: ["Design Normalized Relational Schema & Write High-Performance SQL Joins"],
+    topCourses: ["The Complete SQL Bootcamp (Udemy)", "SQL for Data Analysis"],
+    interviewQuestions: ["What is ACID compliance in databases?", "What is the difference between INNER JOIN and LEFT JOIN?"]
+  },
+  "Express.js": {
+    name: "Express.js RESTful Microservices",
+    category: "Backend",
+    difficulty: "Intermediate",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "Express.js Official Guides (expressjs.com)",
+      "MDN Express Web Development Tutorials"
+    ],
+    targetProjects: ["Build Secure Express.js API Gateway with Rate Limiting & JWT Auth"],
+    topCourses: ["Node.js, Express, MongoDB & More: The Complete Bootcamp"],
+    interviewQuestions: ["How does middleware chaining work in Express.js?", "How do you handle errors centrally in Express?"]
+  },
+  "REST API": {
+    name: "RESTful API Architecture & Security",
+    category: "Backend Architecture",
+    difficulty: "Intermediate",
+    estimatedTime: "1 Week",
+    learningResources: [
+      "RESTful API Design Best Practices (restfulapi.net)",
+      "OpenAPI / Swagger 3.0 Specifications Guide"
+    ],
+    targetProjects: ["Design Production OpenAPI 3.0 Compliant REST Specification"],
+    topCourses: ["REST API Design & Development Masterclass"],
+    interviewQuestions: ["What is idempotency in REST APIs?", "What are the 6 constraints of REST architecture?"]
+  }
+};
+
+/**
+ * Deterministic Post-Processor Guarantee: Ensures 100% accurate keyword extraction, INR Salary in Rs., & Missing Skills Only Roadmap
+ */
+function applyDeterministicKeywordGuarantee(data, rawResumeText, targetRole = "Full Stack Developer") {
   const resumeText = sanitizeResumeText(rawResumeText);
   const targetKeywords = ["React", "Next.js", "Node.js", "Express.js", "MongoDB", "MySQL", "JavaScript", "TypeScript", "Java", "Python", "Docker", "AWS", "REST API", "CI/CD", "Git"];
   
@@ -100,6 +272,91 @@ function applyDeterministicKeywordGuarantee(data, rawResumeText) {
   const hasMetrics = /%\d+|\d+ms|\$\d+|\d+\+|\d+k/i.test(resumeText);
   const baseScore = Math.floor(65 + keywordRatio * 25 + (hasMetrics ? 8 : 4));
   data.atsScore = Math.min(98, Math.max(70, baseScore));
+
+  // 1. MANDATORY SALARY PREDICTION ENFORCEMENT IN INDIAN RUPEES (₹ & LPA)
+  const isSenior = /senior|lead|architect|principal|manager/i.test(targetRole) || /6\+|7\+|8\+/i.test(rawResumeText);
+  const isJunior = /junior|intern|fresher|entry/i.test(targetRole) || /0-1|1-2/i.test(rawResumeText);
+
+  if (isSenior) {
+    data.salaryPrediction = {
+      currentExpected: "₹16,00,000 – ₹22,00,000 (16 – 22 LPA)",
+      postRoadmapExpected: "₹28,00,000 – ₹38,00,000 (28 – 38 LPA)",
+      potentialIncreasePercent: "+55% Boost"
+    };
+  } else if (isJunior) {
+    data.salaryPrediction = {
+      currentExpected: "₹4,50,000 – ₹7,00,000 (4.5 – 7 LPA)",
+      postRoadmapExpected: "₹9,00,000 – ₹13,50,000 (9 – 13.5 LPA)",
+      potentialIncreasePercent: "+65% Boost"
+    };
+  } else {
+    data.salaryPrediction = {
+      currentExpected: "₹8,50,000 – ₹12,00,000 (8.5 – 12 LPA)",
+      postRoadmapExpected: "₹16,00,000 – ₹22,00,000 (16 – 22 LPA)",
+      potentialIncreasePercent: "+48% Boost"
+    };
+  }
+
+  // 2. MANDATORY SKILL ROADMAP ENFORCEMENT: ONLY MISSING SKILLS THAT THE CANDIDATE LACKS
+  let missingRoadmapNodes = [];
+
+  // Filter out any nodes that candidate already possesses if AI model returned completed skills
+  if (Array.isArray(data.skillRoadmap) && data.skillRoadmap.length > 0) {
+    missingRoadmapNodes = data.skillRoadmap.filter(node => {
+      const nodeNameLower = (node.name || "").toLowerCase();
+      const isAlreadyPossessed = foundKeywords.some(kw => nodeNameLower.includes(kw.toLowerCase()));
+      const isCompleted = node.status === "completed";
+      return !isAlreadyPossessed && !isCompleted;
+    });
+  }
+
+  // Build missing skill nodes for missing keywords if none returned or extra missing keywords exist
+  if (missingKeywords.length > 0) {
+    missingKeywords.forEach((kw, idx) => {
+      const template = SKILL_RESOURCE_MAP[kw];
+      const alreadyAdded = missingRoadmapNodes.some(n => n.name?.toLowerCase().includes(kw.toLowerCase()));
+
+      if (!alreadyAdded) {
+        if (template) {
+          missingRoadmapNodes.push({
+            id: `missing-skill-${idx + 1}`,
+            name: template.name,
+            status: "Missing - Action Required",
+            category: template.category,
+            difficulty: template.difficulty,
+            estimatedTime: template.estimatedTime,
+            learningResources: template.learningResources,
+            targetProjects: template.targetProjects,
+            topCourses: template.topCourses,
+            interviewQuestions: template.interviewQuestions
+          });
+        } else {
+          missingRoadmapNodes.push({
+            id: `missing-skill-${idx + 1}`,
+            name: `${kw} Advanced Proficiency`,
+            status: "Missing - Action Required",
+            category: "Technical Skill",
+            difficulty: "Intermediate",
+            estimatedTime: "1 Week",
+            learningResources: [
+              `${kw} Official Developer Documentation`,
+              `FreeCodeCamp ${kw} Interactive Tutorial`
+            ],
+            targetProjects: [`Build Production Project utilizing ${kw}`],
+            topCourses: [`${kw} Complete Masterclass`],
+            interviewQuestions: [`What are the fundamental architectural principles of ${kw}?`]
+          });
+        }
+      }
+    });
+  }
+
+  // Ensure all missing roadmap nodes have clear "Missing - Action Required" status
+  data.skillRoadmap = missingRoadmapNodes.map((node, idx) => ({
+    ...node,
+    id: `missing-skill-${idx + 1}`,
+    status: "Missing - Action Required"
+  }));
 
   return data;
 }
@@ -419,9 +676,9 @@ function generateRealtimeIntelligence(rawResumeText, targetRole = "Full Stack De
       }
     ],
     salaryPrediction: {
-      currentExpected: "$95,000 – $120,000 (6–8 LPA)",
-      postRoadmapExpected: "$140,000 – $175,000 (9–12 LPA)",
-      potentialIncreasePercent: "+42%"
+      currentExpected: "₹8,50,000 – ₹12,00,000 (8.5 – 12 LPA)",
+      postRoadmapExpected: "₹16,00,000 – ₹22,00,000 (16 – 22 LPA)",
+      potentialIncreasePercent: "+48% Boost"
     },
     heatmap: [
       { section: "Summary", status: "Needs Improvement", color: "yellow", comment: "Add strong quantitative elevator pitch" },
@@ -452,7 +709,27 @@ export async function analyzeResumeIntelligence({ resumeText: rawResumeText, tar
 
   const systemPrompt = `
 You are an elite ATS Parsing Simulator and Senior Executive Tech Recruiter with 15+ years of hiring experience at FAANG and top startups.
-Analyze the candidate's resume content IN REAL TIME and return a single, strictly formatted JSON object with detailed career intelligence metrics.
+Analyze the candidate's resume content IN REAL TIME for the Target Role "${targetRole}" in "${targetIndustry}".
+
+CRITICAL OUTPUT MANDATES:
+1. SALARY PREDICTION MUST BE GIVEN STRICTLY IN INDIAN RUPEES (₹ INR & Lakhs Per Annum / LPA).
+   - Format: "salaryPrediction.currentExpected": e.g. "₹8,50,000 – ₹12,00,000 (8.5 – 12 LPA)"
+   - Format: "salaryPrediction.postRoadmapExpected": e.g. "₹16,00,000 – ₹22,00,000 (16 – 22 LPA)"
+   - DO NOT USE DOLLARS ($). USE ONLY INDIAN RUPEES (₹ & LPA).
+
+2. SKILL ROADMAP MUST INCLUDE ONLY MISSING SKILLS THAT THE CANDIDATE LACKS.
+   - Do NOT include skills that the candidate already has in their resume.
+   - For EACH missing skill node in "skillRoadmap", provide:
+     - "id": string (e.g. "missing-skill-1")
+     - "name": string (e.g. "Docker & Containerization")
+     - "status": "Missing - Action Required"
+     - "category": string (e.g. "DevOps")
+     - "difficulty": "Intermediate"
+     - "estimatedTime": "1 - 2 Weeks"
+     - "learningResources": array of specific official docs/guides with links/platforms (e.g. ["Docker Official Docs (docs.docker.com)", "FreeCodeCamp Docker Tutorial"])
+     - "targetProjects": array of specific portfolio projects (e.g. ["Containerize Node.js REST API with Docker Compose"])
+     - "topCourses": array of top recommended courses (e.g. ["Docker Mastery on Udemy"])
+     - "interviewQuestions": array of top technical interview questions (e.g. ["How do multi-stage Docker builds reduce image size?"])
 
 User Target Role: "${targetRole}"
 User Target Industry: "${targetIndustry}"
@@ -480,8 +757,8 @@ Return ONLY valid JSON.
     const cleanJson = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
     let result = JSON.parse(cleanJson);
 
-    // Apply Deterministic Keyword Guarantee Post-Processor
-    result = applyDeterministicKeywordGuarantee(result, rawResumeText);
+    // Apply Deterministic Keyword Guarantee & INR / Missing Skills Post-Processor
+    result = applyDeterministicKeywordGuarantee(result, rawResumeText, targetRole);
 
     // Guarantee Candidate Name is never generic
     if (!result.atsSees?.candidateName || result.atsSees.candidateName === "Candidate") {
@@ -493,7 +770,7 @@ Return ONLY valid JSON.
   } catch (err) {
     console.warn("⚠️ [Resume Intelligence] OpenRouter API fallback engaged:", err.message);
     let realtimeData = generateRealtimeIntelligence(rawResumeText, targetRole, targetIndustry);
-    realtimeData = applyDeterministicKeywordGuarantee(realtimeData, rawResumeText);
+    realtimeData = applyDeterministicKeywordGuarantee(realtimeData, rawResumeText, targetRole);
     return { success: true, data: realtimeData, isRealtimeParsed: true };
   }
 }
