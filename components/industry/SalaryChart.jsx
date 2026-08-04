@@ -4,6 +4,28 @@ import React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-background border rounded-lg p-3 shadow-lg">
+                <p className="font-semibold mb-2">{payload[0].payload.fullRole}</p>
+                <div className="space-y-1 text-sm">
+                    <p className="text-muted-foreground">
+                        Min: <span className="font-medium">₹{payload[0].payload.min.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
+                    </p>
+                    <p className="text-primary">
+                        Median: <span className="font-semibold">₹{payload[0].payload.median.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
+                    </p>
+                    <p className="text-green-600">
+                        Max: <span className="font-medium">₹{payload[0].payload.max.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
+                    </p>
+                </div>
+            </div>
+        );
+    }
+    return null;
+};
+
 export default function SalaryChart({ salaryRanges }) {
     const [view, setView] = React.useState('annual'); // 'annual' or 'monthly'
 
@@ -26,28 +48,6 @@ export default function SalaryChart({ salaryRanges }) {
         median: view === 'monthly' ? Math.round(range.median / 12) : range.median,
         max: view === 'monthly' ? Math.round(range.max / 12) : range.max,
     }));
-
-    const CustomTooltip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="bg-background border rounded-lg p-3 shadow-lg">
-                    <p className="font-semibold mb-2">{payload[0].payload.fullRole}</p>
-                    <div className="space-y-1 text-sm">
-                        <p className="text-muted-foreground">
-                            Min: <span className="font-medium">₹{payload[0].payload.min.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
-                        </p>
-                        <p className="text-primary">
-                            Median: <span className="font-semibold">₹{payload[0].payload.median.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
-                        </p>
-                        <p className="text-green-600">
-                            Max: <span className="font-medium">₹{payload[0].payload.max.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</span>
-                        </p>
-                    </div>
-                </div>
-            );
-        }
-        return null;
-    };
 
     return (
         <Card>
@@ -82,7 +82,7 @@ export default function SalaryChart({ salaryRanges }) {
                 </div>
             </CardHeader>
             <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
+                <ResponsiveContainer width="100%" height={400} minWidth={0} minHeight={0}>
                     <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
                         <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                         <XAxis 

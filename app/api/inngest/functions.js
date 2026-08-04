@@ -1,17 +1,10 @@
 import { db } from "@/lib/prisma";
 import { inngest } from "@/lib/inngest/client";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { OpenAI } from "openai";
 import pLimit from "p-limit";
 import { getAllInsightCategories } from "@/lib/industry-mapper";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({
-  model: "gemini-3-flash-preview",
-  generationConfig: {
-    temperature: 0.3,
-    maxOutputTokens: 1500,
-  },
-});
+// OpenAI initialized lazily
 
 export const generateIndustryInsights = inngest.createFunction(
   { name: "Generate Industry Insights" },
@@ -64,13 +57,25 @@ export const generateIndustryInsights = inngest.createFunction(
       const timeoutId = setTimeout(() => controller.abort(), 20_000);
 
       try {
-        const result = await model.generateContent(prompt, {
+        const openai = new OpenAI({
+          baseURL: "https://openrouter.ai/api/v1",
+          apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY,
+        });
+
+        const response = await openai.chat.completions.create({
+          model: "google/gemini-2.0-flash-001",
+          messages: [
+            { role: "system", content: "You are an expert industry analyst." },
+            { role: "user", content: prompt }
+          ],
+          temperature: 0.3,
+          max_tokens: 1500,
+        }, {
           signal: controller.signal,
         });
         clearTimeout(timeoutId);
 
-        const response = result.response;
-        const text = response.text();
+        const text = response.choices[0].message.content;
         // Clean up markdown blocks if Gemini adds them (```json ... ```)
         const cleanedText = text.replace(/```(?:json)?\n?/g, "").replace(/```/g, "").trim();
 
@@ -149,12 +154,25 @@ Ensure all enums match exactly: High, Medium, Low.
             const timeoutId = setTimeout(() => controller.abort(), 20_000);
 
             try {
-              const result = await model.generateContent(prompt, {
+              const openai = new OpenAI({
+                baseURL: "https://openrouter.ai/api/v1",
+                apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY,
+              });
+
+              const response = await openai.chat.completions.create({
+                model: "google/gemini-2.0-flash-001",
+                messages: [
+                  { role: "system", content: "You are an expert industry analyst." },
+                  { role: "user", content: prompt }
+                ],
+                temperature: 0.3,
+                max_tokens: 1500, // Ensure ample tokens
+              }, {
                 signal: controller.signal,
               });
               clearTimeout(timeoutId);
 
-              const text = result.response.text();
+              const text = response.choices[0].message.content;
               const cleanedText = text
                 .replace(/```(?:json)?\n?/g, "")
                 .replace(/```/g, "")

@@ -4,15 +4,20 @@ import authConfig from "./auth.config";
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
-  // Optional: Add logic here to redirect unauthenticated users
-  // Note: With database sessions, req.auth might be null in middleware/Edge 
-  // because it cannot access the DB to validate the session token.
-  // Validation is best done in Layouts/Pages or via JWT check if we switched strategies.
+  const isLoggedIn = !!req.auth;
+  const { pathname } = req.nextUrl;
 
-  // const isLoggedIn = !!req.auth;
-  // if (!isLoggedIn && req.nextUrl.pathname.startsWith("/dashboard")) {
-  //   return Response.redirect(new URL("/api/auth/signin", req.nextUrl));
-  // }
+  const isProtectedRoute = 
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/interview") ||
+    pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/resume") ||
+    pathname.startsWith("/cover-letter") ||
+    pathname.startsWith("/ai-cover-letter");
+
+  if (isProtectedRoute && !isLoggedIn) {
+    return Response.redirect(new URL("/sign-in", req.nextUrl));
+  }
 });
 
 export const config = {

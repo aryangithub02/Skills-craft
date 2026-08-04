@@ -12,22 +12,22 @@ import { mapToInsightCategory } from "@/lib/industry-mapper";
 export async function createAssessment(assessmentData) {
   const session = await auth();
   const userId = session?.user?.id;
-
-  if (!userId) {
-    throw new Error("Unauthorized");
-  }
+  const userEmail = session?.user?.email;
 
   try {
-    const user = await db.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      console.error(`❌ User not found for ID: ${userId}`);
-      throw new Error("User not found in database");
+    let user = null;
+    if (userId) {
+      user = await db.user.findUnique({ where: { id: userId } });
+    }
+    if (!user && userEmail) {
+      user = await db.user.findUnique({ where: { email: userEmail } });
     }
 
-    console.log(`🤖 Starting assessment generation for user: ${user.id} (${assessmentData.industry})`);
+    if (!user) {
+      return { success: false, error: "Unauthorized - Please sign in to create an assessment." };
+    }
+
+    console.log(`🤖 Starting assessment generation for industry: ${assessmentData.industry}`);
 
     // Fetch industry insights manually to get top skills
     let topSkills = [];
@@ -53,7 +53,6 @@ export async function createAssessment(assessmentData) {
       interviewType: assessmentData.interviewType || 'mixed'
     };
 
-
     // Generate questions using AI BEFORE creating the record
     console.log("⏱️ Calling AI for questions...");
     const questions = await generateInterviewQuestions(userDataForAI);
@@ -69,7 +68,6 @@ export async function createAssessment(assessmentData) {
     if (assessmentData.specificTopic) {
       topics.push(assessmentData.specificTopic);
     }
-
 
     // Create assessment with generated questions
     console.log("💾 Saving to database...");
@@ -99,11 +97,15 @@ export async function createAssessment(assessmentData) {
 
     console.log(`✨ Assessment created successfully: ${assessment.id}`);
 
-    // Return a sanitized version of the assessment to avoid serialization issues
     return {
       success: true,
+      id: assessment.id,
       assessmentId: assessment.id,
-      questionsCount: assessment.questions.length
+      questions: assessment.questions,
+      questionsCount: assessment.questions.length,
+      category: assessment.category,
+      interviewType: assessment.interviewType,
+      difficulty: assessment.difficulty
     };
   } catch (error) {
     console.error("❌ CRITICAL ERROR in createAssessment:", error);
@@ -220,20 +222,47 @@ export async function generateAndStoreQuestions(assessmentId) {
 }
 
 /**
- * Evaluates all answers in an assessment and updates scores
+ * Evaluates all answers in an assessment and updates scores.
+ * Accepts optional answers array — if provided, they are saved to the DB
+ * before evaluation (so the component doesn't need a separate save call).
  */
-export async function evaluateAssessment(assessmentId) {
+export async function evaluateAssessment(assessmentId, answers = null) {
   const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
+  if (!session?.user?.id) {
+    return { success: false, error: "Unauthorized - Please sign in to evaluate assessments." };
+  }
 
   try {
-
-    const assessment = await db.assessment.findUnique({
+    let assessment = await db.assessment.findUnique({
       where: { id: assessmentId },
     });
 
-    if (!assessment || !assessment.questions || assessment.questions.length === 0) {
+    if (!assessment) {
+      return { success: false, error: "Assessment not found" };
+    }
+
+    if (assessment.userId !== session.user.id) {
+      return { success: false, error: "Unauthorized - You do not own this assessment." };
+    }
+
+    if (!assessment.questions || assessment.questions.length === 0) {
       throw new Error("Assessment has no questions to evaluate");
+    }
+
+    // ── If answers were passed inline, save them to DB first ─────────────
+    if (answers && Array.isArray(answers)) {
+      const updatedQuestions = [...assessment.questions];
+      answers.forEach(({ questionIndex, userAnswer }) => {
+        if (updatedQuestions[questionIndex]) {
+          updatedQuestions[questionIndex].userAnswer = userAnswer;
+        }
+      });
+
+      assessment = await db.assessment.update({
+        where: { id: assessmentId },
+        data: { questions: updatedQuestions },
+      });
+      console.log(`✅ Saved ${answers.length} answers to DB`);
     }
 
     // Check if all questions have user answers
@@ -249,15 +278,12 @@ export async function evaluateAssessment(assessmentId) {
       evaluationResult = await evaluateAnswers(assessment.questions);
 
       // Overwrite scores based on correct/incorrect match for MCQs to ensure accuracy
-      // This is crucial for MCQs - we don't want AI hallucinating scores
       evaluationResult.evaluatedQuestions = evaluationResult.evaluatedQuestions.map(q => {
-        // If the question has a definitive correct answer, use it for scoring
         if (q.correctAnswer) {
           const isCorrect = q.userAnswer === q.correctAnswer;
           return {
             ...q,
             score: isCorrect ? 10 : 0,
-            // Keep AI feedback but prepend correctness
             feedback: isCorrect
               ? "Correct! " + q.feedback
               : `Incorrect. The correct answer is: ${q.correctAnswer}. ` + q.feedback
@@ -266,16 +292,15 @@ export async function evaluateAssessment(assessmentId) {
         return q;
       });
 
-      // Recalculate overall score based on deterministic scores
+      // Recalculate overall score
       const totalScore = evaluationResult.evaluatedQuestions.reduce((sum, q) => sum + (q.score || 0), 0);
       const maxPossibleScore = evaluationResult.evaluatedQuestions.length * 10;
       evaluationResult.overallScore = (totalScore / maxPossibleScore) * 100;
 
     } catch (aiError) {
       console.error("AI evaluation failed, using fallback:", aiError);
-      // Fallback to simple evaluation matching
       const evaluatedQuestions = assessment.questions.map(q => {
-        const isCorrect = q.correctAnswer ? q.userAnswer === q.correctAnswer : false; // Default to false if no correct answer stored
+        const isCorrect = q.correctAnswer ? q.userAnswer === q.correctAnswer : false;
         return {
           ...q,
           score: isCorrect ? 10 : 0,
@@ -293,6 +318,13 @@ export async function evaluateAssessment(assessmentId) {
       evaluationResult = {
         evaluatedQuestions,
         overallScore: (totalScore / maxScore) * 100,
+        technicalScore: (totalScore / maxScore) * 95,
+        communicationScore: (totalScore / maxScore) * 90,
+        confidenceScore: (totalScore / maxScore) * 80,
+        problemSolvingScore: (totalScore / maxScore) * 85,
+        strengths: ["Attempted all questions"],
+        weaknesses: ["Answers need more depth and detail"],
+        actionPlan: ["Review key concepts", "Practice with more examples"],
         improvementTips: [
           "Review your answers and continue practicing to improve your performance.",
           "Focus on areas where you had difficulty.",
@@ -334,7 +366,17 @@ export async function evaluateAssessment(assessmentId) {
     return {
       success: true,
       assessmentId: updatedAssessment.id,
-      quizScore: updatedAssessment.quizScore
+      quizScore: evaluationResult.overallScore,
+      overallScore: evaluationResult.overallScore,
+      technicalScore: evaluationResult.technicalScore,
+      communicationScore: evaluationResult.communicationScore,
+      confidenceScore: evaluationResult.confidenceScore,
+      problemSolvingScore: evaluationResult.problemSolvingScore,
+      strengths: evaluationResult.strengths || [],
+      weaknesses: evaluationResult.weaknesses || [],
+      actionPlan: evaluationResult.actionPlan || [],
+      improvementTips: evaluationResult.improvementTips || [],
+      questions: validatedQuestions,
     };
   } catch (error) {
     console.error("Error evaluating assessment:", error);
@@ -358,6 +400,10 @@ export async function updateAllQuestionAnswers(assessmentId, answers) {
 
     if (!currentAssessment) {
       throw new Error("Assessment not found");
+    }
+
+    if (currentAssessment.userId !== session.user.id) {
+      throw new Error("Unauthorized - You do not own this assessment.");
     }
 
     // Update all questions with the user's answers
@@ -407,12 +453,19 @@ export async function updateAllQuestionAnswers(assessmentId, answers) {
  * Retrieves an assessment by ID
  */
 export async function getAssessmentById(assessmentId) {
+  const session = await auth();
+  if (!session?.user?.id && !session?.user?.email) {
+    return null;
+  }
+
   try {
     const assessment = await db.assessment.findUnique({
       where: { id: assessmentId },
       include: {
         user: {
           select: {
+            id: true,
+            email: true,
             name: true,
             experience: true,
             skills: true,
@@ -421,6 +474,14 @@ export async function getAssessmentById(assessmentId) {
         }
       }
     });
+
+    if (!assessment) return null;
+
+    // Ownership check: ensure requesting user owns the assessment
+    const isOwner = assessment.userId === session.user.id || assessment.user?.email === session.user.email;
+    if (!isOwner) {
+      return null;
+    }
 
     // Validate and normalize questions data if assessment exists
     if (assessment && assessment.questions) {
@@ -468,18 +529,18 @@ export async function getAssessmentById(assessmentId) {
 export async function getUserAssessments() {
   const session = await auth();
   const userId = session?.user?.id;
-
-  if (!userId) return [];
-
+  const userEmail = session?.user?.email;
 
   try {
-    const user = await db.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("User not found");
+    let user = null;
+    if (userId) {
+      user = await db.user.findUnique({ where: { id: userId } });
     }
+    if (!user && userEmail) {
+      user = await db.user.findUnique({ where: { email: userEmail } });
+    }
+
+    if (!user) return [];
 
     const assessments = await db.assessment.findMany({
       where: { userId: user.id },
@@ -493,7 +554,7 @@ export async function getUserAssessments() {
     }));
   } catch (error) {
     console.error("Error retrieving user assessments:", error);
-    throw error;
+    return [];
   }
 }
 
@@ -503,18 +564,18 @@ export async function getUserAssessments() {
 export async function getUserAssessmentStats() {
   const session = await auth();
   const userId = session?.user?.id;
-
-  if (!userId) return { totalAssessments: 0, completedAssessments: 0, averageScore: 0 };
-
+  const userEmail = session?.user?.email;
 
   try {
-    const user = await db.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error("User not found");
+    let user = null;
+    if (userId) {
+      user = await db.user.findUnique({ where: { id: userId } });
     }
+    if (!user && userEmail) {
+      user = await db.user.findUnique({ where: { email: userEmail } });
+    }
+
+    if (!user) return { totalAssessments: 0, completedAssessments: 0, averageScore: 0 };
 
     const assessments = await db.assessment.findMany({
       where: { userId: user.id },
@@ -532,6 +593,6 @@ export async function getUserAssessmentStats() {
     };
   } catch (error) {
     console.error("Error retrieving user assessment stats:", error);
-    throw error;
+    return { totalAssessments: 0, completedAssessments: 0, averageScore: 0 };
   }
 }

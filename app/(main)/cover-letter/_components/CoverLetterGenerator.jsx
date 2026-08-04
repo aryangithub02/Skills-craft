@@ -11,11 +11,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles, Save, ArrowLeft, Download } from "lucide-react";
 import { updateCoverLetter } from "@/actions/cover-letter";
-import { generateCoverLetter } from "@/actions/generate-cover-letter"; // We need this action
+import { generateCoverLetter } from "@/actions/generate-cover-letter";
 import { toast } from "sonner";
 import Link from "next/link";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
 import CoverLetterPreview from "./CoverLetterPreview";
+
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const formSchema = z.object({
   jobTitle: z.string().min(1, "Job Title is required"),
@@ -43,18 +45,28 @@ export default function CoverLetterGenerator({ coverLetter }) {
   const handleGenerate = async () => {
       setIsGenerating(true);
       try {
-          // Call AI Generation Action
+          const currentJobTitle = formData.jobTitle || coverLetter?.jobTitle || "Software Engineer";
+          const currentCompany = formData.companyName || coverLetter?.companyName || "Target Company";
+          const currentDescription = formData.jobDescription || coverLetter?.jobDescription || "";
+
+          toast.info("Generating personalized cover letter with AI...");
+
           const generatedText = await generateCoverLetter({
-              ...formData,
-              // We assume backend fetches resume implicitly or we pass resume ID
-              // Let's create a server action that fetches the user's resume for context
+              jobTitle: currentJobTitle,
+              companyName: currentCompany,
+              jobDescription: currentDescription,
           });
-          setContent(generatedText);
-          toast.success("Cover Letter generated successfully!");
-          setActiveTab("editor");
+
+          if (generatedText) {
+            setContent(generatedText);
+            toast.success("Cover Letter generated successfully!");
+            setActiveTab("editor");
+          } else {
+            toast.error("Generation returned empty text. Please try again.");
+          }
       } catch (error) {
-          console.error(error);
-          toast.error("Failed to generate cover letter");
+          console.error("Error generating cover letter:", error);
+          toast.error(error.message || "Failed to generate cover letter");
       } finally {
           setIsGenerating(false);
       }

@@ -4,6 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { TrendingUp, Briefcase } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata = {
     title: "Industry Insights | AI Career Coach",
     description: "Explore comprehensive industry insights, salary trends, and skill requirements across 15+ industries.",

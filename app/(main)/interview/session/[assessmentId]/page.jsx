@@ -354,7 +354,7 @@ export default function InterviewSessionPage() {
             <div className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center justify-between px-2">
                     <Label className="text-foreground font-medium">Select an Option</Label>
-                    <span className="text-xs text-muted-foreground italic">"Choose the best answer."</span>
+                    <span className="text-xs text-muted-foreground italic">&quot;Choose the best answer.&quot;</span>
                 </div>
                 
                 <RadioGroup 

@@ -2,7 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Download, FileDown } from "lucide-react";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
+
+const MDEditorMarkdown = dynamic(
+  () => import("@uiw/react-md-editor").then((mod) => mod.default?.Markdown || mod.Markdown),
+  { ssr: false }
+);
 
 export default function CoverLetterPreview({ content, className }) {
     
@@ -21,7 +26,11 @@ export default function CoverLetterPreview({ content, className }) {
         iframe.style.border = 'none';
         document.body.appendChild(iframe);
 
-        const pdfContent = element.innerHTML;
+        const pdfContent = element.innerHTML
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+            .replace(/on\w+="[^"]*"/gi, "")
+            .replace(/on\w+='[^']*'/gi, "")
+            .replace(/javascript:/gi, "");
         const doc = iframe.contentWindow.document;
 
         doc.open();
@@ -78,7 +87,7 @@ export default function CoverLetterPreview({ content, className }) {
             
             <div className="border bg-white p-8 rounded-sm shadow-sm min-h-[600px] text-black">
                 <div className="prose max-w-none whitespace-pre-wrap font-serif text-sm leading-relaxed">
-                     <MDEditor.Markdown 
+                     <MDEditorMarkdown 
                         source={content} 
                         style={{
                             background: 'transparent',
@@ -93,7 +102,7 @@ export default function CoverLetterPreview({ content, className }) {
             {/* Hidden Container for PDF Rendering */}
             <div className="hidden">
                <div id="cl-pdf-content">
-                   <MDEditor.Markdown 
+                   <MDEditorMarkdown 
                      source={content} 
                      style={{
                          background: 'transparent',

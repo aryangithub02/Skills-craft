@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function OnboardingPage() {
     const session = await auth();
     if (!session?.user) {
-        redirect("/api/auth/signin");
+        redirect("/sign-in");
     }
 
     const user = await db.user.findUnique({

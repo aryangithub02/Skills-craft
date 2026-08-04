@@ -3,8 +3,14 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FileDown, Edit, Eye } from "lucide-react"; 
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
 import { toast } from "sonner";
+
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
+const MDEditorMarkdown = dynamic(
+  () => import("@uiw/react-md-editor").then((mod) => mod.default?.Markdown || mod.Markdown),
+  { ssr: false }
+);
 
 export default function ResumePreview({ content, isPreviewMode = false, onChange }) { 
   const [isEditable, setIsEditable] = useState(false);
@@ -23,7 +29,11 @@ export default function ResumePreview({ content, isPreviewMode = false, onChange
     iframe.style.border = 'none';
     document.body.appendChild(iframe);
 
-    const content = element.innerHTML;
+    const content = element.innerHTML
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+        .replace(/on\w+="[^"]*"/gi, "")
+        .replace(/on\w+='[^']*'/gi, "")
+        .replace(/javascript:/gi, "");
     const doc = iframe.contentWindow.document;
 
     doc.open();
@@ -177,7 +187,7 @@ export default function ResumePreview({ content, isPreviewMode = false, onChange
                   fontFamily: 'Arial, Helvetica, sans-serif',
                   display: 'block'
               }}>
-                  <MDEditor.Markdown 
+                  <MDEditorMarkdown 
                     source={content} 
                     style={{
                         background: 'transparent',

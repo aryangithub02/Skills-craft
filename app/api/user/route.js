@@ -2,6 +2,9 @@ import { db } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request) {
   const session = await auth();
   const userId = session?.user?.id;

@@ -54,7 +54,7 @@ export async function updateCoverLetter(id, content) {
 
 export async function getCoverLetters() {
     const session = await auth();
-    if (!session?.user?.id) throw new Error("Unauthorized");
+    if (!session?.user?.id) return [];
 
     return await db.coverLetter.findMany({
         where: { userId: session.user.id },
@@ -64,7 +64,7 @@ export async function getCoverLetters() {
 
 export async function getCoverLetter(id) {
     const session = await auth();
-    if (!session?.user?.id) throw new Error("Unauthorized");
+    if (!session?.user?.id) return null;
 
     const coverLetter = await db.coverLetter.findUnique({
         where: { id },

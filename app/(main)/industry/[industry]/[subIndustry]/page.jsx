@@ -147,7 +147,7 @@ export default async function SubIndustryDetailPage({ params }) {
                             <div className="mb-6">
                                 <h2 className="text-2xl font-bold mb-2">Tech Stack & Tools</h2>
                                 <p className="text-muted-foreground">
-                                    Technologies and tools you'll work with
+                                    Technologies and tools you&apos;ll work with
                                 </p>
                             </div>
                             
@@ -227,7 +227,7 @@ export default async function SubIndustryDetailPage({ params }) {
                             <div className="mb-6">
                                 <h2 className="text-2xl font-bold mb-2">Industry Trends</h2>
                                 <p className="text-muted-foreground">
-                                    What's shaping the future of this field
+                                    What&apos;s shaping the future of this field
                                 </p>
                             </div>
                             <Card>
