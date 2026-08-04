@@ -11,10 +11,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles, Save, ArrowLeft, Download } from "lucide-react";
 import { updateCoverLetter } from "@/actions/cover-letter";
-import { generateCoverLetter } from "@/actions/generate-cover-letter"; // We need this action
+import { generateCoverLetter } from "@/actions/generate-cover-letter";
 import { toast } from "sonner";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import CoverLetterPreview from "./CoverLetterPreview";
+
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
 const formSchema = z.object({
   jobTitle: z.string().min(1, "Job Title is required"),
